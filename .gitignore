@@ -1,0 +1,114 @@
+# ============================================================
+#  TaskManager — Angular (Client) + ASP.NET Core (Server)
+# ============================================================
+
+
+# ===========================
+#  CLIENT — Angular
+# ===========================
+
+Client/node_modules/
+Client/dist/
+Client/.angular/
+Client/.env
+Client/.env.local
+Client/.env.*.local
+Client/coverage/
+Client/.nyc_output/
+Client/*.js.map
+Client/public/            
+Client/package-lock.json
+
+
+# ===========================
+#  SERVER — ASP.NET Core
+# ===========================
+
+# Build output
+Server/bin/
+Server/obj/
+
+# User-specific files
+Server/*.user
+Server/*.suo
+Server/.vs/
+
+# Environment / secrets
+Server/.env
+Server/.env.local
+Server/appsettings.*.json
+Server/appsettings.Local.json
+Server/secrets.json
+Server/Properties/launchSettings.json 
+Server/Server.http 
+
+# Publish output
+Server/publish/
+Server/out/
+
+# Entity Framework migrations (optional — remove if you want to track them)
+# Server/Migrations/
+
+# NuGet
+Server/.nuget/
+Server/packages/
+Server/*.nupkg
+
+# Test results
+Server/TestResults/
+
+
+# ===========================
+#  GENERAL
+# ===========================
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor — VS Code (keep shared settings, ignore personal)
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+
+# Editor — JetBrains / Rider
+.idea/
+*.iml
+
+# Editor — Visual Studio
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.vs/
+
+# Docker (optional — remove if you want to track these)
+# docker-compose.override.yml
+
+# SSL certs / keys
+*.pem
+*.pfx
+*.key
+*.crt
+*.cer
+
+# VS Code — ignore personal files, keep shared
+.vscode/*
+!.vscode/extensions.json
+
+Client/.vscode/*
+!Client/.vscode/extensions.json
