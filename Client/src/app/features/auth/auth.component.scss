@@ -1,0 +1,147 @@
+.auth-wrap {
+  background: #111;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 200px 20px 40px 20px;
+}
+
+.auth-logo {
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    font-size: 17px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: transparent;
+    color: white;
+
+  span { color: #7F77DD; }
+
+  &:hover { opacity: 0.8; }
+}
+
+.auth-card {
+  background: #1a1a1a;
+  border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 32px;
+  width: 100%;
+  max-width: 400px;
+
+  h1 {
+    font-size: 22px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+
+  p {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 24px;
+  }
+}
+
+.tabs {
+  display: flex;
+  background: #111;
+  border-radius: 8px;
+  padding: 3px;
+  margin-bottom: 24px;
+  gap: 3px;
+}
+
+.tab {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: transparent;
+  color: #555;
+
+  &:hover { color: #888; }
+
+  &--active {
+    background: #7F77DD;
+    color: #fff;
+  }
+}
+
+.form-group {
+  margin-bottom: 16px;
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: #888;
+    margin-bottom: 6px;
+  }
+
+  input {
+    width: 100%;
+    background: #111;
+    border: 0.5px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.15s;
+
+    &:focus { border-color: rgba(127,119,221,0.6); }
+    &::placeholder { color: #444; }
+  }
+}
+
+.btn-submit {
+  width: 100%;
+  background: #7F77DD;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 11px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: opacity 0.15s;
+
+  &:hover { opacity: 0.88; }
+}
+
+.error-banner {
+  background: rgba(226, 75, 74, 0.1);
+  border: 0.5px solid rgba(226, 75, 74, 0.3);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #E24B4A;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 480px) {
+  .auth-card { padding: 24px 20px; }
+}
+
+.error {
+  display: block;
+  font-size: 11px;
+  color: #E24B4A;
+  margin-top: 4px;
+}
+
+.btn-submit {
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}

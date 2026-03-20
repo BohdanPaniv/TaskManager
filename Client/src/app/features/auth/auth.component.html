@@ -1,0 +1,112 @@
+<div class="auth-wrap">
+
+  <button class="auth-logo" (click)="goHome()">
+    Task<span>Manager</span>
+  </button>
+
+  <div class="auth-card">
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button
+        class="tab"
+        [class.tab--active]="activeTab() === 'login'"
+        (click)="setTab('login')">
+        Sign in
+      </button>
+      <button
+        class="tab"
+        [class.tab--active]="activeTab() === 'register'"
+        (click)="setTab('register')">
+        Create account
+      </button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    @if (activeTab() === 'login') {
+      <h1>Welcome back</h1>
+      <p>Sign in to your account to continue</p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input
+            id="login-email"
+            type="email"
+            formControlName="email"
+            placeholder="you@example.com" />
+          @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+            <span class="error">Valid email is required</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input
+            id="login-password"
+            type="password"
+            formControlName="password"
+            placeholder="••••••••" />
+          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+            <span class="error">Min. 6 characters required</span>
+          }
+        </div>
+
+        @if (errorMessage()) {
+          <div class="error-banner">{{ errorMessage() }}</div>
+        }
+
+        <button 
+          type="submit" 
+          class="btn-submit" 
+          [disabled]="loginForm.invalid || isLoading()">
+          {{ isLoading() ? 'Signing in...' : 'Sign in' }}
+        </button>
+      </form>
+    }
+
+    @if (activeTab() === 'register') {
+      <h1>Create account</h1>
+      <p>Get started for free today</p>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+        <div class="form-group">
+          <label for="register-password">Email</label>
+          <input
+            id="register-email"
+            type="email"
+            formControlName="email"
+            placeholder="you@example.com" />
+          @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+            <span class="error">Valid email is required</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="register-password">Password</label>
+          <input
+            id="register-password"
+            type="password"
+            formControlName="password"
+            placeholder="Min. 6 characters" />
+          @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+            <span class="error">Min. 6 characters required</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Confirm password</label>
+          <input
+            id="confirm-password"
+            type="password"
+            formControlName="confirmPassword"
+            placeholder="••••••••" />
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="registerForm.invalid">
+          Create account
+        </button>
+      </form>
+    }
+  </div>
+</div>
