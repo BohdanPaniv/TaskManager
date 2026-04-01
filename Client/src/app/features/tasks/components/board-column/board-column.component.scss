@@ -48,3 +48,16 @@
     }
   }
 }
+
+.column__empty {
+  text-align: center;
+  padding: 24px 12px;
+  border: 0.5px dashed rgba(255,255,255,0.08);
+  border-radius: 8px;
+  margin-bottom: 8px;
+
+  p {
+    font-size: 12px;
+    color: #444;
+  }
+}

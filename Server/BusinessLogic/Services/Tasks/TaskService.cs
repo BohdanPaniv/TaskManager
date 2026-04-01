@@ -41,8 +41,8 @@ namespace BusinessLogic.Services.Tasks
         {
             var task = new TaskItem
             {
-                Title = request.Title,
-                Description = request.Description,
+                Title = request.Title.Trim(),
+                Description = request.Description?.Trim() ?? string.Empty,
                 UserId = userId,
                 Status = request.Status
             };
@@ -59,8 +59,8 @@ namespace BusinessLogic.Services.Tasks
             if (task.UserId != userId)
                 throw new UnauthorizedException("Access denied");
 
-            task.Title = request.Title;
-            task.Description = request.Description;
+            task.Title = request.Title.Trim();
+            task.Description = request.Description?.Trim() ?? string.Empty;
             task.IsCompleted = request.IsCompleted;
 
             var updated = await _taskRepo.UpdateAsync(task);

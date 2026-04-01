@@ -70,8 +70,8 @@
 
           <div class="modal__actions">
             <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
-            <button type="submit" class="btn-save" [disabled]="taskForm.invalid">
-              {{ editingTask() ? 'Save changes' : 'Add card' }}
+            <button type="submit" class="btn-save" [disabled]="taskForm.invalid || isSubmitting()">
+              {{ isSubmitting() ? 'Saving...' : editingTask() ? 'Save changes' : 'Add card' }}
             </button>
           </div>
         </form>

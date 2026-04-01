@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 import { AuthResponse, LoginRequest, RegisterRequest } from '../models/auth.model';
 import { StorageService } from '@core/services/storage.service';
 import { environment } from '@env/environment';
+import { ApiResponse } from "@core/models/api-response.model";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -25,14 +26,14 @@ export class AuthService {
   );
 
   login(request: LoginRequest) {
-    return this.http.post<AuthResponse>(`${this.API}/login`, request).pipe(
-      tap(response => this.handleAuth(response))
+    return this.http.post<ApiResponse<AuthResponse>>(`${this.API}/login`, request).pipe(
+      tap(response => this.handleAuth(response.data))
     );
   }
 
   register(request: RegisterRequest) {
-    return this.http.post<AuthResponse>(`${this.API}/register`, request).pipe(
-      tap(response => this.handleAuth(response))
+    return this.http.post<ApiResponse<AuthResponse>>(`${this.API}/register`, request).pipe(
+      tap(response => this.handleAuth(response.data))
     );
   }
 

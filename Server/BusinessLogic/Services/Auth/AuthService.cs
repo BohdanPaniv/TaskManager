@@ -30,20 +30,21 @@ namespace BusinessLogic.Services.Auth
                 throw new ValidationException("Passwords do not match");
             }
 
-            if (await _userRepo.ExistsAsync(request.Email))
+            var email = request.Email.Trim().ToLower();
+
+            if (await _userRepo.ExistsAsync(email))
             {
-                _logger.LogWarning("Registration failed — email already in use: {Email}", request.Email);
+                _logger.LogWarning("Registration failed — email already in use: {Email}", email);
                 throw new ValidationException("Email already in use");
             }
 
             var user = new User
             {
-                Email = request.Email,
+                Email = email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
             };
 
             var created = await _userRepo.CreateAsync(user);
-
             _logger.LogInformation("New user registered: {Email}", created.Email);
 
             var token = _tokenService.GenerateToken(created);
@@ -52,11 +53,12 @@ namespace BusinessLogic.Services.Auth
 
         public async Task<AuthResponse> LoginAsync(LoginRequest request)
         {
-            var user = await _userRepo.GetByEmailAsync(request.Email);
+            var email = request.Email.Trim().ToLower();
+            var user = await _userRepo.GetByEmailAsync(email);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             {
-                _logger.LogWarning("Failed login attempt for {Email}", request.Email);
+                _logger.LogWarning("Failed login attempt for {Email}", email);
                 throw new UnauthorizedException("Invalid credentials");
             }
 

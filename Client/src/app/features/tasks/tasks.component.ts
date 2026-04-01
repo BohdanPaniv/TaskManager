@@ -25,6 +25,7 @@ export class TasksComponent implements OnInit {
   showModal = signal(false);
   editingTask = signal<TaskItem | null>(null);
   activeColumn = signal<string>('todo');
+  isSubmitting = this.taskService.isSubmitting;
 
   taskForm = this.fb.group({
     title: ['', [Validators.required, Validators.maxLength(200)]],
