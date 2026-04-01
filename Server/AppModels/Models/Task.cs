@@ -7,6 +7,7 @@
         public string Description { get; set; } = string.Empty;
         public bool IsCompleted { get; set; } = false;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public string Status { get; set; } = "todo";
 
         public int UserId { get; set; }
         public User User { get; set; } = null!;

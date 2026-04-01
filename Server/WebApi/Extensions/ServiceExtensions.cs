@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Interfaces;
 using BusinessLogic.Interfaces.Auth;
+using BusinessLogic.Mapping;
 using BusinessLogic.Services.Auth;
 using BusinessLogic.Services.Tasks;
 using DataAccess;
@@ -18,12 +19,15 @@ namespace WebApi.Extensions
         public static IServiceCollection AddApplicationServices(
             this IServiceCollection services, IConfiguration config)
         {
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile<TaskProfile>();
+            });
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     config.GetConnectionString("DefaultConnection"),
                     sql => sql.EnableRetryOnFailure(3, TimeSpan.FromSeconds(5), null)
                 ));
-
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();

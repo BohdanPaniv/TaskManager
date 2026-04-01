@@ -4,6 +4,7 @@ namespace Common.Models.Auth
 {
     public record RegisterRequest(
         [Required] string Email,
-        [Required][MinLength(6)] string Password
+        [Required][MinLength(6)] string Password,
+        [Required] string ConfirmPassword
     );
 }

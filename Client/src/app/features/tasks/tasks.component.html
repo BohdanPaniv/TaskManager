@@ -1,0 +1,82 @@
+<div class="board-wrap">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-logo">Task<span>Manager</span></div>
+    <div class="header-right">
+      <span class="header-user">{{ userEmail }}</span>
+      <button class="btn-logout" (click)="logout()">Logout</button>
+    </div>
+  </header>
+
+  <!-- BOARD -->
+  <div class="board-header">
+    <h1 class="board-title">My Board</h1>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading">Loading tasks...</div>
+  }
+
+  @if (errorMessage()) {
+    <div class="error-banner">{{ errorMessage() }}</div>
+  }
+
+  <!-- COLUMNS -->
+  <div class="columns">
+    @for (column of columns(); track column.id) {
+      <app-board-column
+        [column]="column"
+        (addCard)="openAddModal($event)"
+        (deleteTask)="deleteTask($event)"
+        (editTask)="openEditModal($event)" />
+    }
+  </div>
+
+  <!-- MODAL -->
+  @if (showModal()) {
+    <div class="modal-overlay" (click)="closeModal()" role="button" tabindex="0" (keydown.enter)="closeModal()">
+      <div class="modal" 
+        (click)="$event.stopPropagation()" 
+        role="dialog"
+        (keydown.enter)="$event.stopPropagation()">
+        <div class="modal__header">
+          <h2>{{ editingTask() ? 'Edit task' : 'Add a card' }}</h2>
+          <button class="modal__close" (click)="closeModal()">✕</button>
+        </div>
+
+        <form [formGroup]="taskForm" (ngSubmit)="saveTask()">
+          <div class="form-group">
+            <label for="task-title">Title</label>
+            <input
+              id="task-title"
+              type="text"
+              formControlName="title"
+              placeholder="Enter task title" />
+            @if (taskForm.get('title')?.invalid && taskForm.get('title')?.touched) {
+              <span class="error">Title is required</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="task-desc">Description</label>
+            <textarea
+              id="task-desc"
+              formControlName="description"
+              placeholder="Add a description..."
+              rows="3">
+            </textarea>
+          </div>
+
+          <div class="modal__actions">
+            <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
+            <button type="submit" class="btn-save" [disabled]="taskForm.invalid">
+              {{ editingTask() ? 'Save changes' : 'Add card' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+</div>

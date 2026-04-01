@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Interfaces.Auth;
+using Common.Extensions;
 using Common.Models.Auth;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,14 +20,14 @@ namespace WebApi.Controllers
         public async Task<IActionResult> Register(RegisterRequest request)
         {
             var response = await _authService.RegisterAsync(request);
-            return Ok(response);
+            return Ok(ApiResponse<AuthResponse>.Ok(response));
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest request)
         {
             var response = await _authService.LoginAsync(request);
-            return Ok(response);
+            return Ok(ApiResponse<AuthResponse>.Ok(response));
         }
     }
 }

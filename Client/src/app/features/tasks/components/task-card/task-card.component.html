@@ -1,0 +1,28 @@
+<div 
+    class="card"
+    (click)="editTaskCard()"
+    role="button"
+    tabindex="0"
+    (keydown.enter)="editTaskCard()">
+    <p class="card__title">
+        {{ task().title }}
+    </p>
+
+    @if (task().description) {
+        <p class="card__desc">
+            {{ task().description }}
+        </p>
+    }
+
+    <div class="card__footer">
+        <span class="card__date">
+            {{ task().createdAt | date: 'MMM d' }}
+        </span>
+        <button
+            class="card__delete"
+            (click)="deleteTaskCard($event)"
+            aria-label="Delete task">
+            ✕
+        </button>
+    </div>
+</div>

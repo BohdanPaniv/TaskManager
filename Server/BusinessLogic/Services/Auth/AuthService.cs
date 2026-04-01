@@ -25,6 +25,11 @@ namespace BusinessLogic.Services.Auth
 
         public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
         {
+            if (request.Password != request.ConfirmPassword)
+            {
+                throw new ValidationException("Passwords do not match");
+            }
+
             if (await _userRepo.ExistsAsync(request.Email))
             {
                 _logger.LogWarning("Registration failed — email already in use: {Email}", request.Email);

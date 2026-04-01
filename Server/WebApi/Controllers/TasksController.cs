@@ -43,7 +43,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> Update(int id, UpdateTaskRequest request)
         {
             var task = await _taskService.UpdateAsync(UserId, id, request);
-            return Ok(task);
+            return Ok(ApiResponse<TaskDto>.Ok(task));
         }
 
         [HttpDelete("{id}")]

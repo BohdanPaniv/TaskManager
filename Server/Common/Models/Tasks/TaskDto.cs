@@ -5,6 +5,7 @@
         string Title,
         string Description,
         bool IsCompleted,
-        DateTime CreatedAt
+        DateTime CreatedAt,
+        string Status
     );
 }

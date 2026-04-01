@@ -1,3 +1,4 @@
+using AutoMapper;
 using Serilog;
 using WebApi.Extensions;
 using WebApi.Middleware;
@@ -32,8 +33,14 @@ try
     app.UseAuthorization();
     app.MapControllers();
     app.MapHealthChecks("/health");
+    var mapper = app.Services.GetRequiredService<IMapper>();
+    mapper.ConfigurationProvider.AssertConfigurationIsValid();
 
     app.Run();
+}
+catch (HostAbortedException)
+{
+
 }
 catch (Exception ex)
 {

@@ -1,19 +1,21 @@
 ﻿using AppModels.Models;
+using AutoMapper;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Interfaces;
 using Common.Models.Tasks;
 using DataAccess.Repositories.Interfaces;
-using Microsoft.Extensions.Logging;
 
 namespace BusinessLogic.Services.Tasks
 {
     public class TaskService : ITaskService
     {
         private readonly ITaskRepository _taskRepo;
+        private readonly IMapper _mapper;
 
-        public TaskService(ITaskRepository taskRepo)
+        public TaskService(ITaskRepository taskRepo, IMapper mapper)
         {
             _taskRepo = taskRepo;
+            _mapper = mapper;
         }
 
 
@@ -21,7 +23,7 @@ namespace BusinessLogic.Services.Tasks
         {
             var tasks = await _taskRepo.GetAllByUserIdAsync(userId);
 
-            return tasks.Select(ToDto);
+            return _mapper.Map<IEnumerable<TaskDto>>(tasks);
         }
 
         public async Task<TaskDto> GetByIdAsync(int userId, int taskId)
@@ -32,7 +34,7 @@ namespace BusinessLogic.Services.Tasks
             if (task.UserId != userId)
                 throw new UnauthorizedException("Access denied");
 
-            return ToDto(task);
+            return _mapper.Map<TaskDto>(task);
         }
 
         public async Task<TaskDto> CreateAsync(int userId, CreateTaskRequest request)
@@ -41,11 +43,12 @@ namespace BusinessLogic.Services.Tasks
             {
                 Title = request.Title,
                 Description = request.Description,
-                UserId = userId
+                UserId = userId,
+                Status = request.Status
             };
 
             var created = await _taskRepo.CreateAsync(task);
-            return ToDto(created);
+            return _mapper.Map<TaskDto>(created);
         }
 
         public async Task<TaskDto> UpdateAsync(int userId, int taskId, UpdateTaskRequest request)
@@ -61,7 +64,7 @@ namespace BusinessLogic.Services.Tasks
             task.IsCompleted = request.IsCompleted;
 
             var updated = await _taskRepo.UpdateAsync(task);
-            return ToDto(updated);
+            return _mapper.Map<TaskDto>(updated);
         }
 
         public async Task DeleteAsync(int userId, int taskId)
@@ -74,13 +77,5 @@ namespace BusinessLogic.Services.Tasks
 
             await _taskRepo.DeleteAsync(task);
         }
-
-        private static TaskDto ToDto(TaskItem task) => new(
-            task.Id,
-            task.Title,
-            task.Description,
-            task.IsCompleted,
-            task.CreatedAt
-        );
     }
 }

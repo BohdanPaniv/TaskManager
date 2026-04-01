@@ -1,0 +1,19 @@
+<div class="column">
+  <div class="column__header">
+    <span class="column__title">{{ column().title }}</span>
+    <div class="column__meta">
+      <span class="column__count">{{ column().tasks.length }}</span>
+    </div>
+  </div>
+
+  @for (task of column().tasks; track task.id) {
+    <app-task-card
+      [task]="task"
+      (taskDelete)="deleteTask.emit($event)"
+      (taskEdit)="editTask.emit($event)" />
+  }
+
+  <button class="column__add" (click)="addBoardColumnComponentClick()">
+    + Add a card
+  </button>
+</div>
