@@ -3,25 +3,31 @@ export interface TaskItem {
   title: string;
   description: string;
   isCompleted: boolean;
-  status: 'todo' | 'inprogress' | 'done';
+  status: TaskStatus;
   createdAt: string;
 }
 
 export interface CreateTaskRequest {
   title: string;
   description: string;
-  status: 'todo' | 'inprogress' | 'done';
+  status: TaskStatus;
 }
 
 export interface UpdateTaskRequest {
   title: string;
   description: string;
   isCompleted: boolean;
-  status: 'todo' | 'inprogress' | 'done';
+  status: TaskStatus;
 }
 
 export interface BoardColumn {
-  id: 'todo' | 'inprogress' | 'done';
+  id: TaskStatus;
   title: string;
   tasks: TaskItem[];
+}
+
+export type TaskStatus = 'todo' | 'inprogress' | 'done';
+
+export interface MoveTaskRequest {
+  status: TaskStatus;
 }

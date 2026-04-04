@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable, signal } from "@angular/core";
 import { ApiResponse } from "@core/models/api-response.model";
-import { CreateTaskRequest, TaskItem, UpdateTaskRequest } from "@core/models/task.model";
+import { CreateTaskRequest, TaskItem, UpdateTaskRequest, TaskStatus } from "@core/models/task.model";
 import { environment } from "@env/environment";
 import { throwError } from "rxjs";
 import { catchError, tap } from 'rxjs/operators';
@@ -62,5 +62,24 @@ export class TaskService {
             tap(() => this.tasks.update(tasks => tasks.filter(t => t.id !== id))),
             catchError(err => throwError(() => err))
         );
+    }
+
+    move(id: number, status: TaskStatus){
+        const task = this.tasks().find(t => t.id === id);
+
+        if (!task) {
+            return throwError(() => new Error('Task not found'));
+        }
+
+        return this.http.patch<ApiResponse<TaskItem>>(`${this.API}/${id}/move`, {
+            status
+        }).pipe(
+            tap(response => {
+                this.tasks.update(task => 
+                    task.map(t => t.id === id ? response.data : t)
+                );
+            }),
+            catchError(err => throwError(() => err))
+        )
     }
 }

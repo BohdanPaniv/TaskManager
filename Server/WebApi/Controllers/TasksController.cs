@@ -29,7 +29,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var task = await _taskService.GetByIdAsync(UserId, id);
-            return Ok(task);
+            return Ok(ApiResponse<TaskDto>.Ok(task));
         }
 
         [HttpPost]
@@ -51,6 +51,13 @@ namespace WebApi.Controllers
         {
             await _taskService.DeleteAsync(UserId, id);
             return NoContent();
+        }
+
+        [HttpPatch("{id}/move")]
+        public async Task<IActionResult> Move(int id, [FromBody] MoveTaskRequest request)
+        {
+            var task = await _taskService.MoveAsync(UserId, id, request.Status);
+            return Ok(ApiResponse<TaskDto>.Ok(task));
         }
     }
 }

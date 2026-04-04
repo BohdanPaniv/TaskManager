@@ -1,8 +1,10 @@
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { Router } from '@angular/router';
+import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '@core/auth/auth.service';
 import { TaskService } from './services/task.service';
-import { BoardColumn, TaskItem } from '@core/models/task.model';
+import { BoardColumn, TaskItem, TaskStatus } from '@core/models/task.model';
 import { BoardColumnComponent } from './components/board-column/board-column.component';
 import { ErrorHandlerService } from '@core/services/error-handler.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -10,7 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [BoardColumnComponent, ReactiveFormsModule],
+  imports: [BoardColumnComponent, ReactiveFormsModule, DragDropModule],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss'
 })
@@ -19,6 +21,7 @@ export class TasksComponent implements OnInit {
   private taskService = inject(TaskService);
   private errorHandler = inject(ErrorHandlerService);
   private fb = inject(FormBuilder);
+  private router = inject(Router);
 
   isLoading = this.taskService.isLoading;
   errorMessage = signal('');
@@ -50,11 +53,38 @@ export class TasksComponent implements OnInit {
     }
   ]);
 
+  columnIds = ['todo', 'inprogress', 'done'];
+
   ngOnInit() {
     this.taskService.getAll().subscribe({
       error: (err: HttpErrorResponse) =>
         this.errorMessage.set(this.errorHandler.handle(err))
     });
+  }
+
+   onTaskDrop(event: CdkDragDrop<TaskItem[]>, targetColumnId: string) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    } else {
+      const task = event.previousContainer.data[event.previousIndex];
+
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+
+      this.taskService.move(task.id, targetColumnId as TaskStatus)
+        .subscribe({
+          error: (err: HttpErrorResponse) =>
+            this.errorMessage.set(this.errorHandler.handle(err))
+        });
+    }
   }
 
   openAddModal(columnId: string) {
@@ -94,7 +124,7 @@ export class TasksComponent implements OnInit {
       this.taskService.create({
         title: title!,
         description: description ?? '',
-        status: this.activeColumn() as 'todo' | 'inprogress' | 'done'
+        status: this.activeColumn() as TaskStatus
       }).subscribe({ next: () => this.closeModal() });
     }
   }

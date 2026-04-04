@@ -77,5 +77,19 @@ namespace BusinessLogic.Services.Tasks
 
             await _taskRepo.DeleteAsync(task);
         }
+
+        public async Task<TaskDto> MoveAsync(int userId, int taskId, string status)
+        {
+            var task = await _taskRepo.GetByIdAsync(taskId) ?? throw new NotFoundException("Task not found");
+
+            if (task.UserId != userId)
+            {
+                throw new UnauthorizedException("Access denied");
+            }
+
+            task.Status = status.Trim().ToLower();
+            var updated = await _taskRepo.UpdateAsync(task);
+            return _mapper.Map<TaskDto>(updated);
+        }
     }
 }

@@ -27,9 +27,11 @@
     @for (column of columns(); track column.id) {
       <app-board-column
         [column]="column"
+        [connectedTo]="columnIds"
         (addCard)="openAddModal($event)"
         (deleteTask)="deleteTask($event)"
-        (editTask)="openEditModal($event)" />
+        (editTask)="openEditModal($event)"
+        (taskDrop)="onTaskDrop($event, column.id)" />
     }
   </div>
 
