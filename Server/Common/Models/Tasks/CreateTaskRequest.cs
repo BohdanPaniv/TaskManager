@@ -5,6 +5,7 @@ namespace Common.Models.Tasks
     public record CreateTaskRequest(
         [Required][MaxLength(200)] string Title,
         [MaxLength(2000)] string Description,
-        [Required][MaxLength(20)] string Status
+        [Required][MaxLength(20)] string Status,
+        [Required] int ListId
     );
 }

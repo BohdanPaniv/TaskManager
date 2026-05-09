@@ -2,7 +2,7 @@
 
 namespace BusinessLogic.Interfaces.Auth
 {
-    public interface ITokenService
+    public interface ITokenService : IService
     {
         string GenerateToken(User user);
     }

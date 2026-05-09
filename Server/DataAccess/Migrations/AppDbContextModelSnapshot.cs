@@ -22,7 +22,7 @@ namespace DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AppModels.Models.TaskItem", b =>
+            modelBuilder.Entity("AppModels.Models.Board", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,18 +35,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -58,6 +46,67 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
+
+                    b.ToTable("Boards");
+                });
+
+            modelBuilder.Entity("AppModels.Models.BoardList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BoardId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BoardId");
+
+                    b.ToTable("BoardLists");
+                });
+
+            modelBuilder.Entity("AppModels.Models.TaskItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BoardListId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BoardListId");
 
                     b.ToTable("Tasks");
                 });
@@ -92,10 +141,10 @@ namespace DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("AppModels.Models.TaskItem", b =>
+            modelBuilder.Entity("AppModels.Models.Board", b =>
                 {
                     b.HasOne("AppModels.Models.User", "User")
-                        .WithMany("Tasks")
+                        .WithMany("Boards")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -103,9 +152,41 @@ namespace DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("AppModels.Models.User", b =>
+            modelBuilder.Entity("AppModels.Models.BoardList", b =>
+                {
+                    b.HasOne("AppModels.Models.Board", "Board")
+                        .WithMany("BoardLists")
+                        .HasForeignKey("BoardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Board");
+                });
+
+            modelBuilder.Entity("AppModels.Models.TaskItem", b =>
+                {
+                    b.HasOne("AppModels.Models.BoardList", "BoardList")
+                        .WithMany("Tasks")
+                        .HasForeignKey("BoardListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BoardList");
+                });
+
+            modelBuilder.Entity("AppModels.Models.Board", b =>
+                {
+                    b.Navigation("BoardLists");
+                });
+
+            modelBuilder.Entity("AppModels.Models.BoardList", b =>
                 {
                     b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("AppModels.Models.User", b =>
+                {
+                    b.Navigation("Boards");
                 });
 #pragma warning restore 612, 618
         }

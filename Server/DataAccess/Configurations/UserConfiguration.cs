@@ -12,7 +12,8 @@ namespace DataAccess.Configurations
             builder.Property(u => u.Email).IsRequired().HasMaxLength(256);
             builder.HasIndex(u => u.Email).IsUnique();
             builder.Property(u => u.PasswordHash).IsRequired();
-            builder.Property(u => u.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            builder.Property(u => u.CreatedAt)
+                    .HasDefaultValueSql("GETUTCDATE()");
         }
     }
 }

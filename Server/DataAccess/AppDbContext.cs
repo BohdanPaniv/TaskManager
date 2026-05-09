@@ -7,6 +7,8 @@ namespace DataAccess
     {
         public DbSet<User> Users => Set<User>();
         public DbSet<TaskItem> Tasks => Set<TaskItem>();
+        public DbSet<Board> Boards => Set<Board>();
+        public DbSet<BoardList> BoardLists => Set<BoardList>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

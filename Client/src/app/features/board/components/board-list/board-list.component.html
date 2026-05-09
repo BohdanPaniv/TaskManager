@@ -1,0 +1,37 @@
+<div class="column">
+  <div class="column__header">
+    <span class="column__title">{{ boardList().title }}</span>
+    <div class="column__meta">
+      <span class="column__count">{{ boardList().tasks.length }}</span>
+    </div>
+  </div>
+
+  <div
+    cdkDropList
+    [id]="boardList().id.toString()"
+    [cdkDropListData]="boardList().tasks"
+    [cdkDropListConnectedTo]="connectedTo()"
+    class="column__list"
+    (cdkDropListDropped)="boardListDrop.emit($event)">
+    
+    @if (boardList().tasks.length === 0) {
+      <div class="column__empty">
+        <p>No tasks yet</p>
+      </div>
+    }
+
+     @for (task of boardList().tasks; track task.id) {
+      <div cdkDrag>
+        <app-task-card
+        [task]="task"
+        (taskDelete)="deleteBoardList.emit($event)"
+        (taskEdit)="editBoardList.emit($event)" />
+        <div *cdkDragPlaceholder class="drag-placeholder"></div>
+      </div>
+    }
+  </div>
+
+  <button class="column__add" (click)="addBoardColumnComponentClick()">
+    + Add a card
+  </button>
+</div>

@@ -2,10 +2,10 @@
 
 namespace DataAccess.Repositories.Interfaces
 {
-    public interface ITaskRepository
+    public interface ITaskRepository : IRepository
     {
-        Task<IEnumerable<TaskItem>> GetAllByUserIdAsync(int userId);
-        Task<TaskItem?> GetByIdAsync(int id);
+        Task<IEnumerable<TaskItem>> GetAllByListIdAsync(int listId);
+        Task<TaskItem?> GetByIdAsync(int taskId);
         Task<TaskItem> CreateAsync(TaskItem task);
         Task<TaskItem> UpdateAsync(TaskItem task);
         Task DeleteAsync(TaskItem task);

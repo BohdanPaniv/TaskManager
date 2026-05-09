@@ -11,18 +11,18 @@ import { ApiResponse } from "@core/models/api-response.model";
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private storage = inject(StorageService);
+  private storageService = inject(StorageService);
 
   private readonly TOKEN_KEY = 'auth_token';
   private readonly USER_KEY = 'auth_user';
   private readonly API = `${environment.apiUrl}/api/auth`;
 
   currentUser = signal<AuthResponse | null>(
-    this.storage.getParsed<AuthResponse>(this.USER_KEY)
+    this.storageService.getParsed<AuthResponse>(this.USER_KEY)
   );
 
   isAuthenticated = signal<boolean>(
-    !!this.storage.get(this.TOKEN_KEY)
+    !!this.storageService.get(this.TOKEN_KEY)
   );
 
   login(request: LoginRequest) {
@@ -38,22 +38,22 @@ export class AuthService {
   }
 
   logout() {
-    this.storage.remove(this.TOKEN_KEY);
-    this.storage.remove(this.USER_KEY);
+    this.storageService.remove(this.TOKEN_KEY);
+    this.storageService.remove(this.USER_KEY);
     this.currentUser.set(null);
     this.isAuthenticated.set(false);
     this.router.navigate(['/auth/login']);
   }
 
   getToken(): string | null {
-    return this.storage.get(this.TOKEN_KEY);
+    return this.storageService.get(this.TOKEN_KEY);
   }
 
   private handleAuth(response: AuthResponse) {
-    this.storage.set(this.TOKEN_KEY, response.token);
-    this.storage.setParse(this.USER_KEY, JSON.stringify(response));
+    this.storageService.set(this.TOKEN_KEY, response.token);
+    this.storageService.setParse(this.USER_KEY, JSON.stringify(response));
     this.currentUser.set(response);
     this.isAuthenticated.set(true);
-    this.router.navigate(['/tasks']);
+    this.router.navigate(['/boards']);
   }
 }

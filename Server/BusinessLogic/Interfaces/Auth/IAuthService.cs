@@ -2,7 +2,7 @@
 
 namespace BusinessLogic.Interfaces.Auth
 {
-    public interface IAuthService
+    public interface IAuthService : IService
     {
         Task<AuthResponse> RegisterAsync(RegisterRequest request);
         Task<AuthResponse> LoginAsync(LoginRequest request);

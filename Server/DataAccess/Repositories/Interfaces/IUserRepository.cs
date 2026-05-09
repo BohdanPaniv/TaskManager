@@ -2,7 +2,7 @@
 
 namespace DataAccess.Repositories.Interfaces
 {
-    public interface IUserRepository
+    public interface IUserRepository : IRepository
     {
         Task<User?> GetByEmailAsync(string email);
         Task<User> CreateAsync(User user);

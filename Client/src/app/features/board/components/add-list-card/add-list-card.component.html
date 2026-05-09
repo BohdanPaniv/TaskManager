@@ -1,0 +1,19 @@
+<div class="add-list-card">
+    @if (showAddCard()){
+        <div class="column">
+            <form [formGroup]="listForm" (ngSubmit)="saveList()">
+                <div class="input-container">
+                    <input name="ListName" formControlName="title" class="list-name" placeholder="Enter list name" />
+                </div>
+                <div class="buttons-container">
+                    <button id="addListBtn">Add list</button>
+                    <button class="list__delete" (click)="resetAddingList($event)">✕</button>
+                </div>
+            </form>
+        </div>
+    } @else {
+        <button class="add-list-card__button" (click)="addListCardClick()">
+            <span>+ Add another list</span>
+        </button>
+    }
+</div>

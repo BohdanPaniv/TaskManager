@@ -10,16 +10,18 @@ namespace DataAccess.Repositories
 
         public TaskRepository(AppDbContext context) => _context = context;
 
-        public async Task<IEnumerable<TaskItem>> GetAllByUserIdAsync(int userId)
+        public async Task<IEnumerable<TaskItem>> GetAllByListIdAsync(int listId)
         {
             return await _context.Tasks
-                .Where(t => t.UserId == userId)
+                .Where(t => t.BoardListId == listId)
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
         }
 
-        public async Task<TaskItem?> GetByIdAsync(int id) =>
-            await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id);
+        public async Task<TaskItem?> GetByIdAsync(int id)
+        {
+            return await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id);
+        }
 
         public async Task<TaskItem> CreateAsync(TaskItem task)
         {

@@ -1,10 +1,6 @@
 ﻿using BusinessLogic.Interfaces;
-using BusinessLogic.Interfaces.Auth;
 using BusinessLogic.Mapping;
-using BusinessLogic.Services.Auth;
-using BusinessLogic.Services.Tasks;
 using DataAccess;
-using DataAccess.Repositories;
 using DataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
@@ -22,17 +18,24 @@ namespace WebApi.Extensions
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<TaskProfile>();
+                cfg.AddProfile<BoardListProfile>();
+                cfg.AddProfile<BoardsProfile>();
             });
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     config.GetConnectionString("DefaultConnection"),
                     sql => sql.EnableRetryOnFailure(3, TimeSpan.FromSeconds(5), null)
                 ));
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<ITaskRepository, TaskRepository>();
-            services.AddScoped<ITaskService, TaskService>();
+
+            services.Scan(scan => scan
+                .FromApplicationDependencies()
+                .AddClasses(c => c.AssignableTo<IRepository>())
+                    .AsImplementedInterfaces()
+                    .WithScopedLifetime()
+                .AddClasses(c => c.AssignableTo<IService>())
+                    .AsImplementedInterfaces()
+                    .WithScopedLifetime()
+            );
 
             services.AddHealthChecks()
             .AddDbContextCheck<AppDbContext>();

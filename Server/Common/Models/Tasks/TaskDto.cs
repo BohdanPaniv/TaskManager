@@ -4,8 +4,7 @@
         int Id,
         string Title,
         string Description,
-        bool IsCompleted,
         DateTime CreatedAt,
-        string Status
+        int BoardListId
     );
 }

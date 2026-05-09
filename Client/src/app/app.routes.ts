@@ -13,10 +13,17 @@ export const routes: Routes = [
       import('./features/auth/auth.routes').then(r => r.authRoutes)
   },
   {
-    path: 'tasks',
-    loadChildren: () =>
-      import('./features/tasks/tasks.routes').then(r => r.tasksRoutes),
-    canActivate: [authGuard]
+    path: '',
+    loadComponent: () =>
+      import('./layout/main-layout/main-layout.component').then(c => c.MainLayoutComponent),
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'boards',
+        loadChildren: () =>
+          import('./features/boards/boards.routes').then(r => r.boardsRoutes),
+      }
+    ]
   },
   {
     path: '**',
