@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { AuthService } from '@core/auth/auth.service';
+import { LogoComponent } from './logo/logo.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule],
+  imports: [LogoComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -13,7 +13,8 @@ export class HeaderComponent {
   private authService = inject(AuthService);
 
   get userEmail() {
-    return this.authService.currentUser()?.email ?? '';
+    const currentUser = this.authService.currentUser();
+    return currentUser?.email ?? '';
   }
 
   logout() {

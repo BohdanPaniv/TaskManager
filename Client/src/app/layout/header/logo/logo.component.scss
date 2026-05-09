@@ -1,0 +1,16 @@
+.logo {
+    font-size: 17px;
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: -0.3px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: transparent;
+    
+    span { color: #7F77DD; }
+    &:hover { opacity: 0.8; }
+  }

@@ -16,10 +16,11 @@ export class AuthService {
   private readonly TOKEN_KEY = 'auth_token';
   private readonly USER_KEY = 'auth_user';
   private readonly API = `${environment.apiUrl}/api/auth`;
+  currentUser = signal<AuthResponse | null>(null);
 
-  currentUser = signal<AuthResponse | null>(
-    this.storageService.getParsed<AuthResponse>(this.USER_KEY)
-  );
+  constructor(){
+    this.currentUser.set(this.storageService.getParsed<AuthResponse>(this.USER_KEY));
+  }
 
   isAuthenticated = signal<boolean>(
     !!this.storageService.get(this.TOKEN_KEY)
@@ -51,7 +52,7 @@ export class AuthService {
 
   private handleAuth(response: AuthResponse) {
     this.storageService.set(this.TOKEN_KEY, response.token);
-    this.storageService.setParse(this.USER_KEY, JSON.stringify(response));
+    this.storageService.setParsed(this.USER_KEY, response);
     this.currentUser.set(response);
     this.isAuthenticated.set(true);
     this.router.navigate(['/boards']);

@@ -13,14 +13,7 @@
   justify-content: space-between;
   padding: 20px 40px;
   border-bottom: 0.5px solid rgba(255,255,255,0.08);
-
-  &-logo {
-    font-size: 17px;
-    font-weight: 500;
-    color: #fff;
-    letter-spacing: -0.3px;
-    span { color: #7F77DD; }
-  }
+  height: 75px;
 
   &-links {
     display: flex;

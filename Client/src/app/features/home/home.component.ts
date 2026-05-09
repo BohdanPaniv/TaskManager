@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
+import { LogoComponent } from '../../layout/header/logo/logo.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, LogoComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

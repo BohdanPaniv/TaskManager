@@ -20,10 +20,15 @@ export class StorageService{
 
     getParsed<T>(key: string): T | null {
         const value = this.get(key);
-        return value ? JSON.parse(value) : null;
+
+        if (!value) {
+            return null;
+        }
+
+        return JSON.parse(value) as T;
     }
 
-    setParse<T>(key: string, value: T): void {
+    setParsed<T>(key: string, value: T): void {
         this.set(key, JSON.stringify(value));
     }
 }

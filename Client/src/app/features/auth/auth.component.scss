@@ -7,22 +7,6 @@
   padding: 200px 20px 40px 20px;
 }
 
-.auth-logo {
-    padding: 8px;
-    border-radius: 6px;
-    border: none;
-    font-size: 17px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.15s;
-    background: transparent;
-    color: white;
-
-  span { color: #7F77DD; }
-
-  &:hover { opacity: 0.8; }
-}
-
 .auth-card {
   background: #1a1a1a;
   border: 0.5px solid rgba(255,255,255,0.08);
