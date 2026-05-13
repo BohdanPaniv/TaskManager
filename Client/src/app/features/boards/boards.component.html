@@ -1,0 +1,25 @@
+<div class="boards">
+  <div class="boards-header">
+    <h1 class="boards-title">My Boards</h1>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading">Loading boards...</div>
+  }
+
+  @if (errorMessage()) {
+    <div class="error-banner">{{ errorMessage() }}</div>
+  }
+
+  <div class="boards-container">
+
+    @for (board of boards(); track board.id) {
+      <app-board-card
+        [board]="board"
+      />
+    }
+
+    <app-add-board-card>
+    </app-add-board-card>
+  </div>
+</div>

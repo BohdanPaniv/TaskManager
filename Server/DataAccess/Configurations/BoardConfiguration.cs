@@ -9,6 +9,7 @@ namespace DataAccess.Configurations
         public void Configure(EntityTypeBuilder<Board> builder)
         {
             builder.HasKey(t => t.Id);
+            builder.HasIndex(x => x.IdentNumber).IsUnique();
             builder.Property(t => t.Title).IsRequired().HasMaxLength(200);
             builder.Property(t => t.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
             builder.HasOne(t => t.User)

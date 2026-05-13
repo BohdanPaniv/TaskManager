@@ -1,0 +1,19 @@
+<div class="add-board-card">
+    @if (showAddBoard()){
+        <div class="add-board-card-container">
+            <form [formGroup]="boardForm" (ngSubmit)="saveBoard()">
+                <div class="input-container">
+                    <input name="BoardName" formControlName="title" class="board-name" placeholder="Enter board name" />
+                </div>
+                <div class="buttons-container">
+                    <button id="addBoardBtn">Add board</button>
+                    <button class="board__delete" (click)="resetAddingBoard($event)">✕</button>
+                </div>
+            </form>
+        </div>
+    } @else {
+        <button class="add-board-card__button" (click)="addBoardCardClick()">
+            <span>+ Add another board</span>
+        </button>
+    }
+</div>

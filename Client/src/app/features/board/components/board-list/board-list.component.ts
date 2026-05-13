@@ -11,12 +11,12 @@ import { TaskCardComponent } from "../task-card/task-card.component";
     styleUrl: './board-list.component.scss'
 })
 export class BoardListComponent {
-    boardList = input.required<BoardList>();
-    addCard = output<string>();
-    connectedTo = input<string[]>([]);
-    deleteBoardList = output<number>();
-    editBoardList = output<TaskItem>();
-    boardListDrop = output<CdkDragDrop<TaskItem[]>>();
+  boardList = input.required<BoardList>();
+  addCard = output<string>();
+  connectedTo = input<string[]>([]);
+  deleteBoardList = output<number>();
+  editBoardList = output<TaskItem>();
+  boardListDrop = output<CdkDragDrop<TaskItem[]>>();
 
   addBoardColumnComponentClick() {
     this.addCard.emit(this.boardList().id.toString());

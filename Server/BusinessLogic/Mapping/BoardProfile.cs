@@ -4,9 +4,9 @@ using Common.Models.Boards;
 
 namespace BusinessLogic.Mapping
 {
-    public class BoardsProfile : Profile
+    public class BoardProfile : Profile
     {
-        public BoardsProfile()
+        public BoardProfile()
         {
             CreateMap<Board, BoardDto>();
         }

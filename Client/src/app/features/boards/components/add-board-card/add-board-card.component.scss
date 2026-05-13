@@ -1,0 +1,91 @@
+.add-board-card {
+    .add-board-card-container {
+      display: block;
+      position: relative;
+      width: 100%;
+      min-width: 0;
+      height: 110px;
+      min-height: 108px;
+      padding: 14px;
+      overflow: hidden;
+      border: 0.5px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      background: #1a1a1a;
+    }
+    
+    &__button{
+      border: none;
+      display: block;
+      position: relative;
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 0;
+      height: 100%;
+      min-height: 108px;
+      padding: 0.5rem;
+      overflow: hidden;
+      border-radius: 0.5rem;
+      background-color: #CECED912;
+      background-position: center center;
+      background-size: cover;
+      box-shadow: 0px 0px 0px 1px #00000000, 0px 1px 1px #01040480, 0px 0px 1px #01040480;
+      color: #A9ABAF;
+      font-weight: 400;
+      text-align: center;
+
+      &:hover {
+        color: #A9ABAF;
+        box-shadow: none;
+        background-color: #E3E4F21F;
+      }
+    }
+
+    .board-name {
+      width: 100%;
+      background: #111;
+      border: 0.5px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 14px;
+      color: #fff;
+      outline: none;
+      resize: vertical;
+      font-family: inherit;
+      transition: border-color 0.15s;
+    }
+
+    #addBoardBtn {
+      background: #7F77DD;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .board__delete{
+      background: none;
+      border: none;
+      color: #E24B4A;
+      cursor: pointer;
+      font-size: 15px;
+      opacity: 1;
+      transition: opacity 0.15s;
+      padding: 2px 4px;
+      border-radius: 4px;
+
+      &:hover { background: rgba(226,75,74,0.1); }
+    }
+
+    .buttons-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .input-container {
+      padding-bottom: 10px;
+    }
+}

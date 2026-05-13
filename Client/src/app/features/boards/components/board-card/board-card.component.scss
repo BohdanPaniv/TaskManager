@@ -1,0 +1,45 @@
+.board-card {
+    display: block;
+    height: 110px;
+    overflow: hidden;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 0.5px solid rgba(255, 255, 255, 0.08);
+
+    &:hover {
+        .board-card-background {
+            color: #A9ABAF;
+            box-shadow: none;
+            background-color: rgba(227, 228, 242, 0.1215686275);
+        }
+    }
+
+    &-background {
+        height: 72px;
+        background-color: #CECED912;
+        background-position: center center;
+        background-size: cover;
+    }
+
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    &-title {
+        flex: 1;
+        width: 100%;
+
+        span {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            margin: 0.5rem;
+            overflow: hidden;
+            color: #CECFD2;
+            font-weight: 400;
+            line-height: 20px;
+            word-wrap: break-word;
+        }
+    }
+}

@@ -19,7 +19,7 @@ namespace WebApi.Extensions
             {
                 cfg.AddProfile<TaskProfile>();
                 cfg.AddProfile<BoardListProfile>();
-                cfg.AddProfile<BoardsProfile>();
+                cfg.AddProfile<BoardProfile>();
             });
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(

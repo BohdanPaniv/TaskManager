@@ -8,14 +8,14 @@ import { throwError } from "rxjs";
 
 @Injectable({ providedIn: "root"})
 export class BoardListService {
-    private http = inject(HttpClient);
-    private readonly API = `${environment.apiUrl}/api/lists`;
+  private http = inject(HttpClient);
+  private readonly API = `${environment.apiUrl}/api/lists`;
+  
+  lists = signal<ListItem[]>([]);
+  isLoading = signal(false);
+  isSubmitting = signal(false);
 
-    lists = signal<ListItem[]>([]);
-    isLoading = signal(false);
-    isSubmitting = signal(false);
-
-    create(request: CreateListRequest) {
+  create(request: CreateListRequest) {
       return this.http.post<ApiResponse<ListItem>>(this.API, request).pipe(
           tap(response => {
               this.lists.update(lists => [...lists, response.data]);

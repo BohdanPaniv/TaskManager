@@ -14,5 +14,21 @@ namespace DataAccess.Repositories
             return await _context.Boards
                 .FirstOrDefaultAsync(b => b.Id == boardId);
         }
+
+        public async Task<IEnumerable<Board>> GetAllByUserIdAsync(int userId)
+        {
+            return await _context.Boards
+                .Where(t => t.UserId == userId)
+                .OrderByDescending(t => t.CreatedAt)
+                .ToListAsync();
+        }
+
+        public async Task<Board> CreateAsync(Board board)
+        {
+            _context.Boards.Add(board);
+            await _context.SaveChangesAsync();
+
+            return board;
+        }
     }
 }
