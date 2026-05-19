@@ -1,6 +1,6 @@
 ﻿using AppModels.Models;
 using AutoMapper;
-using Common.Models.Boards;
+using Common.Models.Board;
 
 namespace BusinessLogic.Mapping
 {
@@ -8,7 +8,7 @@ namespace BusinessLogic.Mapping
     {
         public BoardProfile()
         {
-            CreateMap<Board, BoardDto>();
+            CreateMap<Board, BoardInfo>();
         }
     }
 }

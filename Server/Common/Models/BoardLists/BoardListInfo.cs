@@ -2,7 +2,7 @@
 
 namespace Common.Models.BoardLists
 {
-    public record BoardListDto(
+    public record BoardListInfo(
         int Id,
         string Title,
         DateTime CreatedAt,

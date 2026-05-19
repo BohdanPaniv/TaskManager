@@ -7,6 +7,7 @@ import { ErrorHandlerService } from '@core/services/error-handler.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BoardListComponent } from './components/board-list/board-list.component';
 import { AddListCardComponent } from './components/add-list-card/add-list-card.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-board',
@@ -17,6 +18,7 @@ import { AddListCardComponent } from './components/add-list-card/add-list-card.c
 })
 export class BoardComponent implements OnInit {
   private boardService = inject(BoardService);
+  private route = inject(ActivatedRoute);
   private errorHandler = inject(ErrorHandlerService);
   private fb = inject(FormBuilder);
 
@@ -28,6 +30,7 @@ export class BoardComponent implements OnInit {
   isSubmitting = this.boardService.isSubmitting;
   boardLists = this.boardService.boardLists;
   boardListIds = this.boardService.boardListIds;
+  title = this.boardService.title;
 
   boardListForm = this.fb.group({
     title: ['', [Validators.required, Validators.maxLength(200)]],
@@ -36,9 +39,20 @@ export class BoardComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.boardService.getAll().subscribe({
-      error: (err: HttpErrorResponse) =>
-        this.errorMessage.set(this.errorHandler.handle(err))
+     this.route.paramMap.subscribe(params => {
+      const identNumber = params.get('identNumber');
+
+      if (!identNumber) return;
+
+      this.boardService.getBoardInfo(identNumber).subscribe({
+        error: (err: HttpErrorResponse) =>
+          this.errorMessage.set(this.errorHandler.handle(err))
+      });
+
+      this.boardService.getBoardLists(identNumber).subscribe({
+        error: (err: HttpErrorResponse) =>
+          this.errorMessage.set(this.errorHandler.handle(err))
+      });
     });
   }
 

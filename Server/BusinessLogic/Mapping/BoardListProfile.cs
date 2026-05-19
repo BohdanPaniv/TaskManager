@@ -8,7 +8,7 @@ namespace BusinessLogic.Mapping
     {
         public BoardListProfile()
         {
-            CreateMap<BoardList, BoardListDto>();
+            CreateMap<BoardList, BoardListInfo>();
         }
     }
 }

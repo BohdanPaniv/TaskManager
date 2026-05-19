@@ -15,6 +15,12 @@ namespace DataAccess.Repositories
                 .FirstOrDefaultAsync(b => b.Id == boardId);
         }
 
+        public async Task<Board?> GetByIdentNumberAsync(string identNumber)
+        {
+            return await _context.Boards
+                .FirstOrDefaultAsync(b => b.IdentNumber.ToString() == identNumber);
+        }
+
         public async Task<IEnumerable<Board>> GetAllByUserIdAsync(int userId)
         {
             return await _context.Boards

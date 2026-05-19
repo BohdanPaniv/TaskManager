@@ -1,13 +1,12 @@
-﻿using AppModels.Models;
-using Common.Models.Board;
-using Common.Models.Boards;
+﻿using Common.Models.Board;
 
 namespace BusinessLogic.Interfaces
 {
     public interface IBoardService : IService
     {
-        Task<BoardDto> GetByIdAsync(int boardId);
-        Task<IEnumerable<BoardDto>> GetByUserIdAsync(int userId);
-        Task<BoardDto> CreateAsync(CreateBoardRequest request, int userId);
+        Task<BoardInfo> GetByIdAsync(int boardId);
+        Task<BoardInfo> GetBoardInfoAsync(string identNumber, int userId);
+        Task<IEnumerable<BoardInfo>> GetByUserIdAsync(int userId);
+        Task<BoardInfo> CreateAsync(CreateBoardRequest request, int userId);
     }
 }

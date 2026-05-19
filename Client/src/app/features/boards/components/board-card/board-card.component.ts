@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Board } from '@core/models/boards.model'
+import { BoardInfo } from '@core/models/board.model'
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -10,5 +10,5 @@ import { RouterModule } from '@angular/router';
   styleUrl: './board-card.component.scss',
 })
 export class BoardCardComponent {
-  board = input.required<Board>();
+  board = input.required<BoardInfo>();
 }

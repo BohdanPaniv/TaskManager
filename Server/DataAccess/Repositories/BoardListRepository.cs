@@ -21,5 +21,10 @@ namespace DataAccess.Repositories
 
             return list;
         }
+
+        public async Task<IEnumerable<BoardList>> GetByBoardId(int boardId)
+        {
+            return await _context.BoardLists.Where(t => t.BoardId == boardId).ToListAsync();
+        }
     }
 }

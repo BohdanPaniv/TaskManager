@@ -11,7 +11,7 @@ import { LogoComponent } from '../../layout/header/logo/logo.component';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-   private router = inject(Router);
+  private router = inject(Router);
 
   goToRegister() {
     this.router.navigate(['/auth/register']);

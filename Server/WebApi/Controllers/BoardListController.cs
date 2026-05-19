@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.Interfaces;
 using Common.Extensions;
-using Common.Models.Tasks;
+using Common.Models.BoardLists;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -12,52 +12,15 @@ namespace WebApi.Controllers
     [Route("api/[controller]")]
     public class BoardListController : ControllerBase
     {
-        private readonly ITaskService _taskService;
-
-        public BoardListController(ITaskService taskService) => _taskService = taskService;
-
+        private readonly IBoardListService _boardListService;
         private int UserId => int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        public BoardListController(IBoardListService boardListService) => _boardListService = boardListService;
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll(int listId)
+        [HttpGet("{identNumber}")]
+        public async Task<IActionResult> GetBoardListsByIdentNumber(string identNumber)
         {
-            var tasks = await _taskService.GetAllAsync(listId);
-            return Ok(ApiResponse<IEnumerable<TaskDto>>.Ok(tasks));
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            var task = await _taskService.GetByIdAsync(UserId, id);
-            return Ok(ApiResponse<TaskDto>.Ok(task));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateTaskRequest request)
-        {
-            var task = await _taskService.CreateAsync(request);
-            return CreatedAtAction(nameof(GetById), new { id = task.Id }, ApiResponse<TaskDto>.Ok(task));
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UpdateTaskRequest request)
-        {
-            var task = await _taskService.UpdateAsync(UserId, id, request);
-            return Ok(ApiResponse<TaskDto>.Ok(task));
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await _taskService.DeleteAsync(UserId, id);
-            return NoContent();
-        }
-
-        [HttpPatch("{id}/move")]
-        public async Task<IActionResult> Move(int id, [FromBody] MoveTaskRequest request)
-        {
-            var task = await _taskService.MoveAsync(UserId, id);
-            return Ok(ApiResponse<TaskDto>.Ok(task));
+            var boardLists = await _boardListService.GetBoardListsByIdentNumberAsync(identNumber, UserId);
+            return Ok(ApiResponse<IEnumerable<BoardListInfo>>.Ok(boardLists));
         }
     }
 }

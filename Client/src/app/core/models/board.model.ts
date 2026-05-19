@@ -1,10 +1,7 @@
-import { BoardList } from "./board-list.model";
-
-export interface Board {
+export interface BoardInfo {
   id: number;
   title: string;
   identNumber: string,
-  boardLists: BoardList[];
 }
 
 export interface CreateBoardRequest {
