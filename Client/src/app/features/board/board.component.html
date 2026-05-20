@@ -1,7 +1,20 @@
 <div class="board-wrap">
 
   <div class="board-header">
-    <h1 class="board-title">My Board: {{ board()?.title }}</h1>
+    <h1 class="board-title">My Board:</h1>
+    
+    @if (isChangeTitle()) {
+      <input 
+        type="text"
+        #titleInput
+        class="board-title-name"
+        (blur)="saveTitle($event)"  
+        [value]="boardTitle()" />
+    }
+    @else {
+      <button type="button" class="board-title-name" (click)="changeBoardTitle($event)">{{ boardTitle() }}</button>
+    }
+    
   </div>
 
   @if (isLoading()) {

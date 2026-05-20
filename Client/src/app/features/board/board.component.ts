@@ -1,9 +1,10 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ElementRef, ViewChild } from '@angular/core';
 import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BoardService } from './services/board.service';
 import { BoardListService } from './services/board-list.service';
 import { TaskItem } from '@core/models/task.model';
+import { UpdateBoardRequest } from '@core/models/board.model';
 import { ErrorHandlerService } from '@core/services/error-handler.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BoardListComponent } from './components/board-list/board-list.component';
@@ -27,6 +28,9 @@ export class BoardComponent implements OnInit {
   errorMessage = signal('');
   boardLists = this.boardService.boardLists;
   board = this.boardService.board;
+  isChangeTitle = signal(false);
+  boardTitle = this.boardService.boardTitle;
+  @ViewChild('titleInput') titleInput?: ElementRef<HTMLInputElement>;
 
   ngOnInit() {
      this.route.paramMap.subscribe(params => {
@@ -43,6 +47,38 @@ export class BoardComponent implements OnInit {
         error: (err: HttpErrorResponse) =>
           this.errorMessage.set(this.errorHandler.handle(err))
       });
+    });
+  }
+
+  changeBoardTitle(event: Event){
+    event.preventDefault();
+
+    this.isChangeTitle.set(true);
+
+    setTimeout(() => {
+      this.titleInput?.nativeElement.focus();
+    });
+  }
+
+  saveTitle(event: Event){
+    event.preventDefault();
+    const value = (event.target as HTMLInputElement).value;
+    const request: UpdateBoardRequest = {
+      title: value
+    };
+
+    const boardId = this.board()?.id;
+
+    if (!boardId) {
+      return;
+    }
+    
+    this.boardService.saveTitle(boardId, request).subscribe({
+      next: () => this.isChangeTitle.set(false),
+      error: (err: HttpErrorResponse) => {
+        this.errorMessage.set(this.errorHandler.handle(err));
+        this.isLoading.set(false);
+      }
     });
   }
 
@@ -64,10 +100,10 @@ export class BoardComponent implements OnInit {
       );
 
       this.boardListService.move(task.id, targetColumnId)
-        .subscribe({
-          error: (err: HttpErrorResponse) =>
-            this.errorMessage.set(this.errorHandler.handle(err))
-        });
+      .subscribe({
+        error: (err: HttpErrorResponse) =>
+          this.errorMessage.set(this.errorHandler.handle(err))
+      });
     }
   }
 }

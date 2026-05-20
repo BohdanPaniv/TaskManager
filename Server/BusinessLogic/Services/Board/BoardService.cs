@@ -1,7 +1,10 @@
-﻿using AutoMapper;
+﻿using AppModels.Models;
+using AutoMapper;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Interfaces;
 using Common.Models.Board;
+using Common.Models.Boards;
+using Common.Models.Tasks;
 using DataAccess.Repositories.Interfaces;
 using BoardModel = AppModels.Models.Board;
 
@@ -64,6 +67,20 @@ namespace BusinessLogic.Services.Board
 
             var created = await _boardRepo.CreateAsync(board);
             return _mapper.Map<BoardInfo>(created);
+        }
+
+        public async Task<BoardInfo> UpdateAsync(UpdateBoardRequest request, int boardId, int userId)
+        {
+            var board = await _boardRepo.GetByIdAsync(boardId)
+                ?? throw new NotFoundException("Board not found");
+
+            if (board.UserId != userId)
+                throw new UnauthorizedException("Access denied");
+
+            board.Title = request.Title.Trim();
+
+            var updated = await _boardRepo.UpdateAsync(board);
+            return _mapper.Map<BoardInfo>(updated);
         }
 
         public async Task DeleteAsync(int userId, int boardId)

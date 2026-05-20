@@ -19,7 +19,9 @@ export class BoardListService {
     
     return this.http.post<ApiResponse<BoardListItem>>(this.API, request).pipe(
         tap(response => {
+            console.log(this.boardLists())
             this.boardLists.update(lists => [...lists, response.data]);
+            console.log(this.boardLists())
             this.isSubmitting.set(false);
         }),
         catchError(err => {

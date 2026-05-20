@@ -37,6 +37,14 @@ namespace DataAccess.Repositories
             return board;
         }
 
+        public async Task<Board> UpdateAsync(Board board)
+        {
+            _context.Boards.Update(board);
+            await _context.SaveChangesAsync();
+
+            return board;
+        }
+
         public async Task DeleteAsync(Board board)
         {
             _context.Boards.Remove(board);

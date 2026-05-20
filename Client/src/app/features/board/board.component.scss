@@ -5,12 +5,27 @@
 
 .board-header {
   padding: 24px 24px 16px;
+  display: flex;
 }
 
-.board-title {
+.board-title, .board-title-name {
   font-size: 20px;
   font-weight: 500;
   color: #fff;
+  padding-right: 10px;
+}
+
+.board-title-name {
+  padding: 0 15px;
+  border: none;
+  background: #111111;
+  cursor: pointer;
+  width: 150px;
+  text-align: left;
+
+  &:hover {
+    background-color: rgba(227, 228, 242, 0.1215686275);
+  }
 }
 
 .columns {

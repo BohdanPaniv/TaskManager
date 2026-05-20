@@ -7,3 +7,7 @@ export interface BoardInfo {
 export interface CreateBoardRequest {
   title: string;
 }
+
+export interface UpdateBoardRequest {
+  title: string;
+}

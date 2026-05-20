@@ -1,6 +1,9 @@
 ﻿using BusinessLogic.Interfaces;
+using BusinessLogic.Services.Tasks;
 using Common.Extensions;
 using Common.Models.Board;
+using Common.Models.Boards;
+using Common.Models.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -43,6 +46,13 @@ namespace WebApi.Controllers
         {
             var board = await _boardService.CreateAsync(request, UserId);
             return CreatedAtAction(nameof(GetById), new { id = board.Id }, ApiResponse<BoardInfo>.Ok(board));
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, UpdateBoardRequest request)
+        {
+            var board = await _boardService.UpdateAsync(request, id, UserId);
+            return Ok(ApiResponse<BoardInfo>.Ok(board));
         }
 
         [HttpDelete("{id}")]
