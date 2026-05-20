@@ -18,6 +18,7 @@ export class BoardsService {
   
   getAll() {
     this.isLoading.set(true);
+    
     return this.http.get<ApiResponse<BoardInfo[]>>(this.API).pipe(
         tap(response => {
             this.boards.set(response.data);
@@ -33,6 +34,8 @@ export class BoardsService {
   }
 
   create(request: CreateBoardRequest) {
+    this.isSubmitting.set(true);
+
     return this.http.post<ApiResponse<BoardInfo>>(this.API, request).pipe(
         tap(response => {
             this.boards.update(boards => [...boards, response.data]);
@@ -42,6 +45,13 @@ export class BoardsService {
             this.isSubmitting.set(false);
             return throwError(() => err);
         })
+    );
+  }
+
+  delete(id: number) {
+    return this.http.delete(`${this.API}/${id}`).pipe(
+        tap(() => this.boards.update(boards => boards.filter(t => t.id !== id))),
+        catchError(err => throwError(() => err))
     );
   }
 }

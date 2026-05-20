@@ -1,7 +1,7 @@
 <div class="add-list-card">
-    @if (showAddCard()){
+    @if (showAddBoardListCard()){
         <div class="column">
-            <form [formGroup]="listForm" (ngSubmit)="saveList()">
+            <form [formGroup]="boardListForm" (ngSubmit)="saveBoardList()">
                 <div class="input-container">
                     <input name="ListName" formControlName="title" class="list-name" placeholder="Enter list name" />
                 </div>
@@ -13,7 +13,7 @@
         </div>
     } @else {
         <button class="add-list-card__button" (click)="addListCardClick()">
-            <span>+ Add another list</span>
+            <span>+ Add another board</span>
         </button>
     }
 </div>

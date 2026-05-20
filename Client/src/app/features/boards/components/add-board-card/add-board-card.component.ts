@@ -1,10 +1,11 @@
 import { Component, signal, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { BoardsService } from '../../services/boards.service';
+import { DeleteButtonComponent } from '../../../../shared/components/delete-button/delete-button.component';
 
 @Component({
   selector: 'app-add-board-card',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, DeleteButtonComponent],
   templateUrl: './add-board-card.component.html',
   styleUrl: './add-board-card.component.scss',
 })

@@ -3,6 +3,7 @@
 namespace Common.Models.BoardLists
 {
     public record CreateBoardListRequest(
-        [Required][MaxLength(200)] string Title
+        [Required][MaxLength(200)] string Title,
+        int BoardId
     );
 }

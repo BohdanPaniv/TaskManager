@@ -14,12 +14,13 @@ namespace DataAccess.Repositories
         {
             return await _context.BoardLists.FirstOrDefaultAsync(t => t.Id == id);
         }
-        public async Task<BoardList> CreateAsync(BoardList list)
+
+        public async Task<BoardList> CreateAsync(BoardList boardList)
         {
-            _context.BoardLists.Add(list);
+            _context.BoardLists.Add(boardList);
             await _context.SaveChangesAsync();
 
-            return list;
+            return boardList;
         }
 
         public async Task<IEnumerable<BoardList>> GetByBoardId(int boardId)

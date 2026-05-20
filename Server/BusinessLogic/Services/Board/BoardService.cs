@@ -65,5 +65,16 @@ namespace BusinessLogic.Services.Board
             var created = await _boardRepo.CreateAsync(board);
             return _mapper.Map<BoardInfo>(created);
         }
+
+        public async Task DeleteAsync(int userId, int boardId)
+        {
+            var board = await _boardRepo.GetByIdAsync(boardId)
+                ?? throw new NotFoundException("Board not found");
+
+            if (board.UserId != userId)
+                throw new UnauthorizedException("Access denied");
+
+            await _boardRepo.DeleteAsync(board);
+        }
     }
 }

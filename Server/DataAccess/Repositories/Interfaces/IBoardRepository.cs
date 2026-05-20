@@ -8,5 +8,6 @@ namespace DataAccess.Repositories.Interfaces
         Task<Board?> GetByIdentNumberAsync(string identNumber);
         Task<IEnumerable<Board>> GetAllByUserIdAsync(int userId);
         Task<Board> CreateAsync(Board board);
+        Task DeleteAsync(Board task);
     }
 }

@@ -1,7 +1,9 @@
-import { Component, output, input } from "@angular/core";
+import { Component, output, input, inject } from "@angular/core";
 import { CdkDropList, CdkDrag, CdkDragDrop, CdkDragPlaceholder  } from '@angular/cdk/drag-drop';
-import { BoardList, TaskItem } from "@core/models/board-list.model";
+import { BoardList } from "@core/models/board-list.model";
+import { TaskItem } from '@core/models/task.model';
 import { TaskCardComponent } from "../task-card/task-card.component";
+import { BoardService } from '../../services/board.service';
 
 @Component({
     selector: "app-board-list",
@@ -11,10 +13,11 @@ import { TaskCardComponent } from "../task-card/task-card.component";
     styleUrl: './board-list.component.scss'
 })
 export class BoardListComponent {
+  private boardService = inject(BoardService);
+
   boardList = input.required<BoardList>();
   addCard = output<string>();
   connectedTo = input<string[]>([]);
-  deleteBoardList = output<number>();
   editBoardList = output<TaskItem>();
   boardListDrop = output<CdkDragDrop<TaskItem[]>>();
 

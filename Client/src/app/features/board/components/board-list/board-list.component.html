@@ -23,9 +23,7 @@
      @for (task of boardList().tasks; track task.id) {
       <div cdkDrag>
         <app-task-card
-        [task]="task"
-        (taskDelete)="deleteBoardList.emit($event)"
-        (taskEdit)="editBoardList.emit($event)" />
+        [task]="task" />
         <div *cdkDragPlaceholder class="drag-placeholder"></div>
       </div>
     }

@@ -1,16 +1,4 @@
-export interface TaskItem {
-  id: number;
-  title: string;
-  description: string;
-  isCompleted: boolean;
-  createdAt: string;
-}
-
-export interface CreateBoardListRequest {
-  title: string;
-  description: string;
-  boardListId: number;
-}
+import { TaskItem } from './task.model';
 
 export interface UpdateBoardListRequest {
   title: string;
@@ -29,11 +17,13 @@ export interface MoveBoardListItemRequest {
   boadListId: number;
 }
 
-export interface CreateListRequest{
-    title: string;
+export interface CreateBoardListRequest{
+  title: string;
+  boardId: number;
 }
 
-export interface ListItem {
+export interface BoardListItem {
   id: number;
   name: string;
+  boardId: number;
 }

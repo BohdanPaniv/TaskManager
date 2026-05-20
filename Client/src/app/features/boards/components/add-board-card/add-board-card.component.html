@@ -7,7 +7,7 @@
                 </div>
                 <div class="buttons-container">
                     <button id="addBoardBtn">Add board</button>
-                    <button class="board__delete" (click)="resetAddingBoard($event)">✕</button>
+                    <app-delete-button (clicked)="resetAddingBoard($event)" />
                 </div>
             </form>
         </div>

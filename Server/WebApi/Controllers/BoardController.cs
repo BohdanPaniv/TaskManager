@@ -44,5 +44,12 @@ namespace WebApi.Controllers
             var board = await _boardService.CreateAsync(request, UserId);
             return CreatedAtAction(nameof(GetById), new { id = board.Id }, ApiResponse<BoardInfo>.Ok(board));
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _boardService.DeleteAsync(UserId, id);
+            return NoContent();
+        }
     }
 }

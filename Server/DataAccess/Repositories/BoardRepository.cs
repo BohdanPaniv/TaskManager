@@ -36,5 +36,12 @@ namespace DataAccess.Repositories
 
             return board;
         }
+
+        public async Task DeleteAsync(Board board)
+        {
+            _context.Boards.Remove(board);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

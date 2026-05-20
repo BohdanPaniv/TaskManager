@@ -1,7 +1,7 @@
 <div class="board-wrap">
 
   <div class="board-header">
-    <h1 class="board-title">My Board: {{ title() }}</h1>
+    <h1 class="board-title">My Board: {{ board()?.title }}</h1>
   </div>
 
   @if (isLoading()) {
@@ -16,59 +16,10 @@
     @for (boardList of boardLists(); track boardList.id) {
       <app-board-list
         [boardList]="boardList"
-        (addCard)="openAddModal($event)"
-        (deleteBoardList)="deleteBoardList($event)"
-        (editBoardList)="openEditModal($event)"
         (boardListDrop)="onTaskDrop($event, boardList.id)" />
     }
 
-    <app-add-list-card>
-    </app-add-list-card>
+    <app-add-board-list-card>
+    </app-add-board-list-card>
   </div>
-
-  <!-- MODAL -->
-  @if (showModal()) {
-    <div class="modal-overlay" (click)="closeModal()" role="button" tabindex="0" (keydown.enter)="closeModal()">
-      <div class="modal" 
-        (click)="$event.stopPropagation()" 
-        role="dialog"
-        (keydown.enter)="$event.stopPropagation()">
-        <div class="modal__header">
-          <h2>{{ editingBoardList() ? 'Edit task' : 'Add a card' }}</h2>
-          <button class="modal__close" (click)="closeModal()">✕</button>
-        </div>
-
-        <form [formGroup]="boardListForm" (ngSubmit)="saveBoardList()">
-          <div class="form-group">
-            <label for="task-title">Title</label>
-            <input
-              id="task-title"
-              type="text"
-              formControlName="title"
-              placeholder="Enter task title" />
-            @if (boardListForm.get('title')?.invalid && boardListForm.get('title')?.touched) {
-              <span class="error">Title is required</span>
-            }
-          </div>
-
-          <div class="form-group">
-            <label for="task-desc">Description</label>
-            <textarea
-              id="task-desc"
-              formControlName="description"
-              placeholder="Add a description..."
-              rows="3">
-            </textarea>
-          </div>
-
-          <div class="modal__actions">
-            <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
-            <button type="submit" class="btn-save" [disabled]="boardListForm.invalid || isSubmitting()">
-              {{ isSubmitting() ? 'Saving...' : editingBoardList() ? 'Save changes' : 'Add card' }}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  }
 </div>
