@@ -37,9 +37,7 @@ namespace BusinessLogic.Services.Tasks
         {
             var task = await _taskRepo.GetByIdAsync(taskId)
                 ?? throw new NotFoundException("Task not found");
-
-            if (task.BoardList.Board.UserId != userId)
-                throw new UnauthorizedException("Access denied");
+            await CheckUserAccess(userId, task);
 
             return _mapper.Map<TaskDto>(task);
         }
@@ -62,9 +60,7 @@ namespace BusinessLogic.Services.Tasks
         {
             var task = await _taskRepo.GetByIdAsync(taskId)
                 ?? throw new NotFoundException("Task not found");
-
-            if (task.BoardList.Board.UserId != userId)
-                throw new UnauthorizedException("Access denied");
+            await CheckUserAccess(userId, task);
 
             task.Title = request.Title.Trim();
             task.Description = request.Description?.Trim() ?? string.Empty;
@@ -73,19 +69,23 @@ namespace BusinessLogic.Services.Tasks
             return _mapper.Map<TaskDto>(updated);
         }
 
-        public async Task DeleteAsync(int userId, int taskId)
+        private async Task CheckUserAccess(int userId, TaskItem task)
         {
-            var task = await _taskRepo.GetByIdAsync(taskId)
-                ?? throw new NotFoundException("Task not found");
-
             var boardList = await _boardListRepo.GetByIdAsync(task.BoardListId)
-                ?? throw new NotFoundException("Board's list not found");
+                            ?? throw new NotFoundException("Board's list not found");
 
             var board = await _boardRepo.GetByIdAsync(boardList.BoardId)
                 ?? throw new NotFoundException("Board not found");
 
             if (board.UserId != userId)
                 throw new UnauthorizedException("Access denied");
+        }
+
+        public async Task DeleteAsync(int userId, int taskId)
+        {
+            var task = await _taskRepo.GetByIdAsync(taskId)
+                ?? throw new NotFoundException("Task not found");
+            await CheckUserAccess(userId, task);
 
             await _taskRepo.DeleteAsync(task);
         }
@@ -93,11 +93,7 @@ namespace BusinessLogic.Services.Tasks
         public async Task<TaskDto> MoveAsync(int userId, int taskId)
         {
             var task = await _taskRepo.GetByIdAsync(taskId) ?? throw new NotFoundException("Task not found");
-
-            if (task.BoardList.Board.UserId != userId)
-            {
-                throw new UnauthorizedException("Access denied");
-            }
+            await CheckUserAccess(userId, task);
 
             var updated = await _taskRepo.UpdateAsync(task);
             return _mapper.Map<TaskDto>(updated);

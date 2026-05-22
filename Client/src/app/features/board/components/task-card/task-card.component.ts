@@ -17,7 +17,7 @@ export class TaskCardComponent {
   private errorHandler = inject(ErrorHandlerService);
 
   task = input.required<TaskItem>();
-  taskEdit = output<TaskItem>();
+  edit = output<void>();
   showModal = signal(false);
   errorMessage = signal('');
   
@@ -32,6 +32,6 @@ export class TaskCardComponent {
   }
   
   editTaskCard() {
-    this.taskEdit.emit(this.task());
+    this.edit.emit();
   }
 }

@@ -22,7 +22,16 @@ export class TaskService {
 
         return this.http.post<ApiResponse<TaskItem>>(this.API, request).pipe(
             tap(response => {
-                this.reloadBoardList(request.boardListId, response);
+                this.boardLists.update(boardLists =>
+                    boardLists.map(boardList =>
+                        boardList.id === request.boardListId
+                        ? {
+                            ...boardList,
+                            tasks: [...boardList.tasks, response.data]
+                        }
+                        : boardList
+                    )
+                );
                 this.isSubmitting.set(false);
             }),
             catchError(err => {
@@ -36,7 +45,20 @@ export class TaskService {
         this.isSubmitting.set(true);
         return this.http.put<ApiResponse<TaskItem>>(`${this.API}/${id}`, request).pipe(
             tap(response => {
-                this.reloadBoardList(request.boardListId, response);
+                this.boardLists.update(boardLists =>
+                    boardLists.map(boardList =>
+                        boardList.id === request.boardListId
+                        ? {
+                            ...boardList,
+                            tasks: boardList.tasks.map(task =>
+                                task.id === id
+                                ? response.data
+                                : task
+                            )
+                        }
+                        : boardList
+                    )
+                );
                 this.isSubmitting.set(false);
             }),
             catchError(err => {
@@ -56,19 +78,6 @@ export class TaskService {
                 }
                 : boardList))),
             catchError(err => throwError(() => err))
-        );
-    }
-
-    reloadBoardList(boardListId: number, response: ApiResponse<TaskItem>){
-        this.boardLists
-        .update(boardLists => boardLists.map(boardList =>
-                boardList.id === boardListId
-                ? {
-                    ...boardList,
-                    tasks: [...boardList.tasks, response.data]
-                }
-                : boardList
-            )
         );
     }
 }
