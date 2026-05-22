@@ -9,6 +9,6 @@ namespace BusinessLogic.Interfaces
         Task<TaskDto> CreateAsync(CreateTaskRequest request);
         Task<TaskDto> UpdateAsync(int userId, int taskId, UpdateTaskRequest request);
         Task DeleteAsync(int userId, int taskId);
-        Task<TaskDto> MoveAsync(int userId, int taskId);
+        Task<TaskDto> MoveAsync(int id, int boardListId, int userId);
     }
 }

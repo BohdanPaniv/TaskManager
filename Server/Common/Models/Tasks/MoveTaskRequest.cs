@@ -3,6 +3,6 @@
 namespace Common.Models.Tasks
 {
     public record MoveTaskRequest(
-        [Required] string Status
+        [Required] int BoardListId
     );
 }

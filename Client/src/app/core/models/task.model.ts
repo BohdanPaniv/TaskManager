@@ -19,3 +19,7 @@ export interface UpdateTaskRequest {
   isCompleted: boolean;
   boardListId: number;
 }
+
+export interface MoveTaskRequest {
+  boardListId: number;
+}

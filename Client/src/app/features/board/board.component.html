@@ -29,13 +29,13 @@
     @for (boardList of boardLists(); track boardList.id) {
       <app-board-list
         [boardList]="boardList"
+        [connectedTo]="boardListIds()"
         (addTask)="openAddTaskModal(boardList.id)"
         (editTask)="openEditModal($event)"
         (boardListDrop)="onTaskDrop($event, boardList.id)" />
     }
 
-    <app-add-board-list-card>
-    </app-add-board-list-card>
+    <app-add-board-list-card />
   </div>
 </div>
 

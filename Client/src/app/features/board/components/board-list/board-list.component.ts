@@ -37,9 +37,7 @@ export class BoardListComponent {
     this.editTask.emit(task);
   }
 
-  deleteBoardList(event: Event){
-    event.stopPropagation();
-
+  deleteBoardList(){
     this.boardListService.delete(this.boardList().id).subscribe({
       error: (err: HttpErrorResponse) => {
         this.errorMessage.set(this.errorHandler.handle(err));

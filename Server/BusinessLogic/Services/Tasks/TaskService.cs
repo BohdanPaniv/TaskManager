@@ -90,11 +90,12 @@ namespace BusinessLogic.Services.Tasks
             await _taskRepo.DeleteAsync(task);
         }
 
-        public async Task<TaskDto> MoveAsync(int userId, int taskId)
+        public async Task<TaskDto> MoveAsync(int id, int boardListId, int userId)
         {
-            var task = await _taskRepo.GetByIdAsync(taskId) ?? throw new NotFoundException("Task not found");
+            var task = await _taskRepo.GetByIdAsync(id) ?? throw new NotFoundException("Task not found");
             await CheckUserAccess(userId, task);
-
+            
+            task.BoardListId = boardListId;
             var updated = await _taskRepo.UpdateAsync(task);
             return _mapper.Map<TaskDto>(updated);
         }

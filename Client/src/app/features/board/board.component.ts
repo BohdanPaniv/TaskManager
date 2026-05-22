@@ -1,5 +1,5 @@
-import { Component, inject, OnInit, signal, ElementRef, ViewChild } from '@angular/core';
-import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Component, inject, OnInit, signal, ElementRef, ViewChild, computed } from '@angular/core';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BoardService } from './services/board.service';
 import { BoardListService } from './services/board-list.service';
@@ -30,6 +30,9 @@ export class BoardComponent implements OnInit {
   isLoading = this.boardService.isLoading;
   errorMessage = signal('');
   boardLists = this.boardService.boardLists;
+  boardListIds = computed(() =>
+    this.boardLists().map(l => l.id.toString())
+  );
   board = this.boardService.board;
   isChangeTitle = signal(false);
   boardTitle = this.boardService.boardTitle;
@@ -88,30 +91,24 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  onTaskDrop(event: CdkDragDrop<TaskItem[]>, targetColumnId: number) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    } else {
-      const task = event.previousContainer.data[event.previousIndex];
-
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-
-      this.boardListService.move(task.id, targetColumnId)
-      .subscribe({
-        error: (err: HttpErrorResponse) =>
-          this.errorMessage.set(this.errorHandler.handle(err))
-      });
-    }
+  onTaskDrop(event: CdkDragDrop<TaskItem[]>, targetBoardListId: number) {
+  if (event.previousContainer === event.container) {
+    moveItemInArray(
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex
+    );
+  } else {
+    const task = event.previousContainer.data[event.previousIndex];
+    this.boardListService.move(task.id, task.boardListId, targetBoardListId).subscribe({
+      next: () => {
+        this.boardService.moveTask(task, targetBoardListId);
+      },
+      error: (err: HttpErrorResponse) =>
+        this.errorMessage.set(this.errorHandler.handle(err))
+    });
   }
+}
 
   openAddTaskModal(boardListId: number) {
     this.selectedBoardListId.set(boardListId);

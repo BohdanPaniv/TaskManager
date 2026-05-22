@@ -3,7 +3,7 @@
     <span class="column__title">{{ boardList().title }}</span>
     <div class="column__meta">
       <span class="column__count">{{ boardList().tasks.length }}</span>
-      <app-delete-button (clicked)="deleteBoardList($event)"></app-delete-button>
+      <app-delete-button (clicked)="deleteBoardList()"></app-delete-button>
     </div>
   </div>
 
@@ -22,11 +22,10 @@
     }
 
      @for (task of boardList().tasks; track task.id) {
-      <div cdkDrag>
+      <div cdkDrag [cdkDragData]="task">
         <app-task-card
           [task]="task"
-          (edit)="onEditTask(task)"
-         />
+          (edit)="onEditTask(task)" />
         <div *cdkDragPlaceholder class="drag-placeholder"></div>
       </div>
     }

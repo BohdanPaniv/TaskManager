@@ -56,7 +56,7 @@ namespace WebApi.Controllers
         [HttpPatch("{id}/move")]
         public async Task<IActionResult> Move(int id, [FromBody] MoveTaskRequest request)
         {
-            var task = await _taskService.MoveAsync(UserId, id);
+            var task = await _taskService.MoveAsync(id, request.BoardListId, UserId);
             return Ok(ApiResponse<TaskDto>.Ok(task));
         }
     }

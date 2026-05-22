@@ -6,11 +6,13 @@ import { ApiResponse } from "@core/models/api-response.model";
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from "rxjs";
 import { BoardService } from "./board.service";
+import { TaskItem, MoveTaskRequest } from "@core/models/task.model";
 
 @Injectable({ providedIn: "root"})
 export class BoardListService {
   private http = inject(HttpClient);
   private readonly API = `${environment.apiUrl}/api/boardlist`;
+  private readonly TaskAPI = `${environment.apiUrl}/api/task`;
   private boardService = inject(BoardService);
 
   boardLists = this.boardService.boardLists;
@@ -53,22 +55,24 @@ export class BoardListService {
       );
   }
 
-  move(id: number, boardListId: number){
-      const task = this.boardLists().find(t => t.id === id);
+  move(id: number, prevBoardListId: number, boardListId: number){
+    const boardList = this.boardLists().find(bl => bl.id === prevBoardListId);
 
-      if (!task) {
-          return throwError(() => new Error('Task not found'));
-      }
+    if (!boardList) {
+        return throwError(() => new Error('Board list not found'));
+    }
 
-      return this.http.patch<ApiResponse<BoardList>>(`${this.API}/${id}/move`, {
-          boardListId
-      }).pipe(
-          tap(response => {
-              this.boardLists.update(task => 
-                  task.map(t => t.id === id ? response.data : t)
-              );
-          }),
-          catchError(err => throwError(() => err))
-      )
+    const task = boardList.tasks.find(t => t.id === id);
+    if (!task) {
+        return throwError(() => new Error('Task not found'));
+    }
+
+    const moveRequest: MoveTaskRequest = {
+        boardListId
+    };
+    
+    return this.http.patch<ApiResponse<TaskItem>>(`${this.TaskAPI}/${id}/move`, moveRequest).pipe(
+        catchError(err => throwError(() => err))
+    )
   }
 }
