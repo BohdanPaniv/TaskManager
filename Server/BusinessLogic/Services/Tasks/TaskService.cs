@@ -10,11 +10,19 @@ namespace BusinessLogic.Services.Tasks
     public class TaskService : ITaskService
     {
         private readonly ITaskRepository _taskRepo;
+        private readonly IBoardListRepository _boardListRepo;
+        private readonly IBoardRepository _boardRepo;
         private readonly IMapper _mapper;
 
-        public TaskService(ITaskRepository taskRepo, IMapper mapper)
+        public TaskService(
+            ITaskRepository taskRepo, 
+            IBoardListRepository boardListRepo,
+            IBoardRepository boardRepo,
+            IMapper mapper)
         {
             _taskRepo = taskRepo;
+            _boardListRepo = boardListRepo;
+            _boardRepo = boardRepo;
             _mapper = mapper;
         }
 
@@ -43,7 +51,7 @@ namespace BusinessLogic.Services.Tasks
                 Title = request.Title.Trim(),
                 Description = request.Description?.Trim() ?? string.Empty,
                 CreatedAt = DateTime.UtcNow,
-                BoardListId = request.ListId,
+                BoardListId = request.BoardListId,
             };
 
             var created = await _taskRepo.CreateAsync(task);
@@ -70,7 +78,13 @@ namespace BusinessLogic.Services.Tasks
             var task = await _taskRepo.GetByIdAsync(taskId)
                 ?? throw new NotFoundException("Task not found");
 
-            if (task.BoardList.Board.UserId != userId)
+            var boardList = await _boardListRepo.GetByIdAsync(task.BoardListId)
+                ?? throw new NotFoundException("Board's list not found");
+
+            var board = await _boardRepo.GetByIdAsync(boardList.BoardId)
+                ?? throw new NotFoundException("Board not found");
+
+            if (board.UserId != userId)
                 throw new UnauthorizedException("Access denied");
 
             await _taskRepo.DeleteAsync(task);

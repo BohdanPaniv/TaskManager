@@ -29,6 +29,8 @@
     @for (boardList of boardLists(); track boardList.id) {
       <app-board-list
         [boardList]="boardList"
+        (addTask)="openAddTaskModal(boardList.id)"
+        (editTask)="openEditModal($event)"
         (boardListDrop)="onTaskDrop($event, boardList.id)" />
     }
 
@@ -36,3 +38,12 @@
     </app-add-board-list-card>
   </div>
 </div>
+
+<!-- MODAL -->
+@if (showTaskModal()) {
+  <app-add-task-modal
+    [boardListId]="selectedBoardListId()!"
+    [task]="editingTask()"
+    (closed)="closeModal()">
+  </app-add-task-modal>
+}

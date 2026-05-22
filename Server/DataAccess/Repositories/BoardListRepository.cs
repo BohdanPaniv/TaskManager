@@ -25,7 +25,9 @@ namespace DataAccess.Repositories
 
         public async Task<IEnumerable<BoardList>> GetByBoardId(int boardId)
         {
-            return await _context.BoardLists.Where(t => t.BoardId == boardId).ToListAsync();
+            return await _context.BoardLists
+                .Include(bl => bl.Tasks)
+                .Where(t => t.BoardId == boardId).ToListAsync();
         }
 
         public async Task DeleteAsync(BoardList boardList)

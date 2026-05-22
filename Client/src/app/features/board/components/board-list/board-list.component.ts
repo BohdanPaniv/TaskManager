@@ -20,14 +20,21 @@ export class BoardListComponent {
   private errorHandler = inject(ErrorHandlerService);
 
   boardList = input.required<BoardList>();
-  addCard = output<string>();
+  
+  addTask = output<number>();
+  editTask = output<TaskItem>();
+  
   connectedTo = input<string[]>([]);
-  editBoardList = output<TaskItem>();
   boardListDrop = output<CdkDragDrop<TaskItem[]>>();
+  
   errorMessage = signal('');
 
-  addBoardColumnComponentClick() {
-    this.addCard.emit(this.boardList().id.toString());
+  addTaskClick() {
+    this.addTask.emit(this.boardList().id);
+  }
+
+  onEditTask(task: TaskItem) {
+    this.editTask.emit(task);
   }
 
   deleteBoardList(event: Event){

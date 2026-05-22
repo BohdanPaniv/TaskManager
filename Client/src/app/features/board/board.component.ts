@@ -10,11 +10,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { BoardListComponent } from './components/board-list/board-list.component';
 import { AddBoardListCardComponent } from './components/add-board-list-card/add-board-list-card.component';
 import { ActivatedRoute } from '@angular/router';
+import { AddTaskModalComponent } from './components/add-task-modal/add-task-modal.component';
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [ReactiveFormsModule, DragDropModule, BoardListComponent, AddBoardListCardComponent],
+  imports: [ReactiveFormsModule, DragDropModule, BoardListComponent, AddBoardListCardComponent, AddTaskModalComponent],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss'
 })
@@ -24,13 +25,18 @@ export class BoardComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private errorHandler = inject(ErrorHandlerService);
 
+  @ViewChild('titleInput') titleInput?: ElementRef<HTMLInputElement>;
+
   isLoading = this.boardService.isLoading;
   errorMessage = signal('');
   boardLists = this.boardService.boardLists;
   board = this.boardService.board;
   isChangeTitle = signal(false);
   boardTitle = this.boardService.boardTitle;
-  @ViewChild('titleInput') titleInput?: ElementRef<HTMLInputElement>;
+
+  showTaskModal  = signal(false);
+  selectedBoardListId = signal<number | null>(null);
+  editingTask = signal<TaskItem | null>(null);
 
   ngOnInit() {
      this.route.paramMap.subscribe(params => {
@@ -105,5 +111,21 @@ export class BoardComponent implements OnInit {
           this.errorMessage.set(this.errorHandler.handle(err))
       });
     }
+  }
+
+  openAddTaskModal(boardListId: number) {
+    this.selectedBoardListId.set(boardListId);
+    this.editingTask.set(null);
+    this.showTaskModal.set(true);
+  }
+
+  openEditModal(task: TaskItem) {
+    this.selectedBoardListId.set(task.boardListId);
+    this.editingTask.set(task);
+    this.showTaskModal.set(true);
+  }
+
+  closeModal() {
+    this.showTaskModal.set(false)
   }
 }

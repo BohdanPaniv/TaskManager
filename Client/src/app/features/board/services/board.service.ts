@@ -14,7 +14,6 @@ export class BoardService {
     private readonly boardListAPI = `${environment.apiUrl}/api/BoardList`;
 
     boardLists = signal<BoardList[]>([]);
-    boardListIds = signal<string[]>([]);
     isLoading = signal(false);
     isSubmitting = signal(false);
     board = signal<BoardInfo | null>(null);
@@ -41,8 +40,6 @@ export class BoardService {
         return this.http.get<ApiResponse<BoardList[]>>(this.boardListAPI + '/' + identNumber).pipe(
             tap(response => {
                 this.boardLists.set(response.data);
-                const boardListIds = this.boardLists().map(list => list.id.toString());
-                this.boardListIds.set(boardListIds)
                 this.isLoading.set(false);
             }),
             catchError(err => {

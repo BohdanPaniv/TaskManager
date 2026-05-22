@@ -10,7 +10,6 @@ export interface TaskItem {
 export interface CreateTaskRequest{
   title: string;
   description: string;
-  isCompleted: boolean;
   boardListId: number;
 }
 

@@ -24,13 +24,15 @@
      @for (task of boardList().tasks; track task.id) {
       <div cdkDrag>
         <app-task-card
-        [task]="task" />
+          [task]="task"
+          (edit)="onEditTask(task)"
+         />
         <div *cdkDragPlaceholder class="drag-placeholder"></div>
       </div>
     }
   </div>
 
-  <button class="column__add" (click)="addBoardColumnComponentClick()">
+  <button class="column__add" (click)="addTaskClick()">
     + Add a card
   </button>
 </div>

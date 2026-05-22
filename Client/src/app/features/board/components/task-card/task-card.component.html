@@ -26,11 +26,3 @@
         </button>
     </div>
 </div>
-
-<!-- MODAL -->
-  @if (showModal()) {
-    <app-add-task-modal
-        [showModal]="showModal"
-        [boardListId]="task().boardListId">
-    </app-add-task-modal>
-  }

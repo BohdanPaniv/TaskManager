@@ -4,7 +4,7 @@
         role="dialog"
         (keydown.enter)="$event.stopPropagation()">
         <div class="modal__header">
-            <h2>{{ editingTask() ? 'Edit task' : 'Add a card' }}</h2>
+            <h2>{{ task() ? 'Edit task' : 'Add a task' }}</h2>
             <button class="modal__close" (click)="closeModal()">✕</button>
         </div>
 
@@ -34,7 +34,7 @@
             <div class="modal__actions">
             <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
             <button type="submit" class="btn-save" [disabled]="taskForm.invalid || isSubmitting()">
-                {{ isSubmitting() ? 'Saving...' : editingTask() ? 'Save changes' : 'Add card' }}
+                {{ isSubmitting() ? 'Saving...' : task() ? 'Save changes' : 'Add card' }}
             </button>
             </div>
         </form>

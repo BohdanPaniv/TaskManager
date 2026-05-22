@@ -20,7 +20,6 @@ export class BoardsComponent implements OnInit {
   isLoading = this.boardsService.isLoading;
   errorMessage = signal('');
   boards = this.boardsService.boards;
-  boardIds = this.boardsService.boardIds;
 
   boardForm = this.fb.group({
     title: ['', [Validators.required, Validators.maxLength(200)]],

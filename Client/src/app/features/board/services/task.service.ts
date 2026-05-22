@@ -6,13 +6,15 @@ import { TaskItem } from '@core/models/task.model';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from "rxjs";
 import { ApiResponse } from "@core/models/api-response.model";
+import { BoardService } from "../services/board.service";
 
 @Injectable({ providedIn: "root"})
 export class TaskService {
     private http = inject(HttpClient);
-    private readonly API = `${environment.apiUrl}/api/boardlist`;
+    private readonly API = `${environment.apiUrl}/api/task`;
+    private boardService = inject(BoardService);
   
-    tasks = signal<TaskItem[]>([]);
+    boardLists = this.boardService.boardLists;
     isSubmitting = signal(false);
     
     create(request: CreateTaskRequest) {
@@ -20,7 +22,7 @@ export class TaskService {
 
         return this.http.post<ApiResponse<TaskItem>>(this.API, request).pipe(
             tap(response => {
-                this.tasks.update(tasks => [...tasks, response.data]);
+                this.reloadBoardList(request.boardListId, response);
                 this.isSubmitting.set(false);
             }),
             catchError(err => {
@@ -34,13 +36,39 @@ export class TaskService {
         this.isSubmitting.set(true);
         return this.http.put<ApiResponse<TaskItem>>(`${this.API}/${id}`, request).pipe(
             tap(response => {
-                this.tasks.update(tasks => tasks.map(t => t.id === id ? response.data : t));
+                this.reloadBoardList(request.boardListId, response);
                 this.isSubmitting.set(false);
             }),
             catchError(err => {
                 this.isSubmitting.set(false);
                 return throwError(() => err);
             })
+        );
+    }
+
+    delete(task: TaskItem) {
+        return this.http.delete(`${this.API}/${task.id}`).pipe(
+            tap(() => this.boardLists.update(boardLists => boardLists.map(boardList => 
+                boardList.id === task.boardListId
+                ? {
+                    ...boardList,
+                    tasks: boardList.tasks.filter(t => t.id != task.id)
+                }
+                : boardList))),
+            catchError(err => throwError(() => err))
+        );
+    }
+
+    reloadBoardList(boardListId: number, response: ApiResponse<TaskItem>){
+        this.boardLists
+        .update(boardLists => boardLists.map(boardList =>
+                boardList.id === boardListId
+                ? {
+                    ...boardList,
+                    tasks: [...boardList.tasks, response.data]
+                }
+                : boardList
+            )
         );
     }
 }
