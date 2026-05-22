@@ -27,5 +27,12 @@ namespace DataAccess.Repositories
         {
             return await _context.BoardLists.Where(t => t.BoardId == boardId).ToListAsync();
         }
+
+        public async Task DeleteAsync(BoardList boardList)
+        {
+            _context.BoardLists.Remove(boardList);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

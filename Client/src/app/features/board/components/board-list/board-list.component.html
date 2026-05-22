@@ -3,6 +3,7 @@
     <span class="column__title">{{ boardList().title }}</span>
     <div class="column__meta">
       <span class="column__count">{{ boardList().tasks.length }}</span>
+      <app-delete-button (clicked)="deleteBoardList($event)"></app-delete-button>
     </div>
   </div>
 

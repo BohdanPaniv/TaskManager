@@ -23,7 +23,7 @@ namespace BusinessLogic.Services.Lists
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<BoardListInfo>> GetBoardListsByIdentNumberAsync(string identNumber, int userId)
+        public async Task<IEnumerable<BoardListDto>> GetBoardListsByIdentNumberAsync(string identNumber, int userId)
         {
             var board = await _boardRepository.GetByIdentNumberAsync(identNumber);
 
@@ -39,10 +39,10 @@ namespace BusinessLogic.Services.Lists
 
             var boardLists = await _boardListRepo.GetByBoardId(board.Id);
 
-            return _mapper.Map<IEnumerable<BoardListInfo>>(boardLists);
+            return _mapper.Map<IEnumerable<BoardListDto>>(boardLists);
         }
 
-        public async Task<BoardListInfo> CreateAsync(CreateBoardListRequest request)
+        public async Task<BoardListDto> CreateAsync(CreateBoardListRequest request)
         {
             var boardList = new BoardList
             {
@@ -52,10 +52,10 @@ namespace BusinessLogic.Services.Lists
             };
 
             var created = await _boardListRepo.CreateAsync(boardList);
-            return _mapper.Map<BoardListInfo>(created);
+            return _mapper.Map<BoardListDto>(created);
         }
 
-        public async Task<BoardListInfo> GetByIdAsync(int id)
+        public async Task<BoardListDto> GetByIdAsync(int id)
         {
             var boardList = await _boardListRepo.GetByIdAsync(id);
 
@@ -64,7 +64,20 @@ namespace BusinessLogic.Services.Lists
                 throw new NotFoundException("Board's list not found");
             }
 
-            return _mapper.Map<BoardListInfo>(boardList);
+            return _mapper.Map<BoardListDto>(boardList);
+        }
+
+        public async Task DeleteAsync(int userId, int boardListId)
+        {
+            var boardList = await _boardListRepo.GetByIdAsync(boardListId)
+                ?? throw new NotFoundException("Board's list not found");
+
+            var board = await _boardRepository.GetByIdAsync(boardList.BoardId)
+                ?? throw new NotFoundException("Board not found");
+            if (board.UserId != userId)
+                throw new UnauthorizedException("Access denied");
+
+            await _boardListRepo.DeleteAsync(boardList);
         }
     }
 }

@@ -6,6 +6,7 @@ namespace DataAccess.Repositories.Interfaces
     {
         Task<BoardList?> GetByIdAsync(int id);
         Task<IEnumerable<BoardList>> GetByBoardId(int boardId);
-        Task<BoardList> CreateAsync(BoardList list);
+        Task<BoardList> CreateAsync(BoardList boardList);
+        Task DeleteAsync(BoardList boardList);
     }
 }

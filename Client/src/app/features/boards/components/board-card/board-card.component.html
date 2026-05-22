@@ -1,6 +1,6 @@
 <div class="board-card" [routerLink]="['/boards', board().identNumber]">
     <div class="button-container">
-        <app-delete-button (clicked)="deleteBoard($event)" />
+        <app-delete-button class="delete-board" (clicked)="deleteBoard($event)" />
         <div class="board-card-background"></div>
         <div class="board-card-title">
             <span> {{ board().title }}</span>

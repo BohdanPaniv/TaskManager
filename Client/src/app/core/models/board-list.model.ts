@@ -10,6 +10,8 @@ export interface UpdateBoardListRequest {
 export interface BoardList {
   id: number;
   title: string;
+  createdAt: Date;
+  boardId: number;
   tasks: TaskItem[];
 }
 
